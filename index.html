@@ -39,6 +39,9 @@ button,input,select,textarea{font:inherit;color:inherit}
 .top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:68px}
 .logo{font-family:var(--gothic);font-size:32px;line-height:1;color:var(--paper);text-decoration:none}
 .logo:hover{color:var(--paper)}
+.logo{display:flex;align-items:center}
+.logo img{height:58px;width:auto;display:block}
+@media (max-width:560px){.logo img{height:50px}}
 .nav{display:flex;align-items:center;gap:24px}
 .nav a{color:var(--muted);text-decoration:none;font-weight:600;font-size:14px;letter-spacing:.08em;text-transform:uppercase}
 .nav a:hover{color:var(--paper)}
@@ -308,7 +311,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 
 <div class="top">
   <div class="wrap">
-    <a class="logo" href="#inicio" aria-label="Alex Caps, inicio">Alex Caps</a>
+    <a class="logo" href="#inicio" aria-label="Alex Caps, inicio"><img src="img/logo.png" alt="Alex Caps" width="440" height="197"></a>
     <nav class="nav" aria-label="Secciones">
       <a href="#tienda">Tienda</a>
       <a href="#mayoreo">Mayoreo</a>
