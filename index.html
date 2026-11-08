@@ -593,8 +593,8 @@ const PRODUCTS = [
   {no:34, cat:"Hoodies", brand:"Axx Mafia",  model:"Time Is Money",          desc:"Mitad negro y mitad estampado de billetes de 100, capucha con cierre completo. En la espalda, “time is money”.", price:1350, sizes:["S","M","L","XL"], video:"vid/axx-mafia-2.mp4"},
   {no:35, cat:"Hoodies", brand:"Paionazo",   model:"Paionazo Payaso",        desc:"Negro con pedrería en todo el cuerpo, capucha con cierre completo y cara de payaso. En la espalda, payaso con vasos.", price:1350, sizes:["S","XL"], video:"vid/paionazo.mp4"},
   {no:36, cat:"Hoodies", brand:"Sp5der",     model:"Sp5der Negro",           desc:"Negro con letras “spöder” al frente, pedrería fina en todo el cuerpo y capucha. Míralo puesto en el video.", price:1350, sizes:["S","M","L","XL","2XL"], video:"vid/sp5der.mp4", poster:"vid/sp5der-poster.jpg"},
-  {no:43, cat:"Hoodies", brand:"By Dineral", model:"Bathe in Pape Negro y Gris", desc:"Mitad negro y mitad camuflaje gris con signos de dólar, capucha con cierre completo y cara bordada. En la espalda, “Bathe in Pape!” en felpa y “BYD” en la capucha.", price:1500, wholesale:{group:"Hoodies preventa By Dineral", min:10, price:1250}, sizes:null, preventa:true, video:"vid/dineral-negro.mp4"},
-  {no:44, cat:"Hoodies", brand:"By Dineral", model:"Bathe in Pape Blanco Camo", desc:"Camuflaje blanco y gris con signos de dólar, capucha con cierre completo y cara bordada. En la espalda, “Bathe in Pape!” con letras de colores en felpa.", price:1500, wholesale:{group:"Hoodies preventa By Dineral", min:10, price:1250}, sizes:null, preventa:true, video:"vid/dineral-blanco.mp4"},
+  {no:43, cat:"Hoodies", brand:"By Dineral", model:"Bathe in Pape Negro y Gris", desc:"Mitad negro y mitad camuflaje gris con signos de dólar, capucha con cierre completo y cara bordada. En la espalda, “Bathe in Pape!” en felpa y “BYD” en la capucha.", price:1500, wholesale:{group:"Hoodies preventa By Dineral", min:10, price:1250, note:"Puedes combinar los dos colores.", unit:"hoodie de preventa"}, sizes:null, preventa:true, video:"vid/dineral-negro.mp4"},
+  {no:44, cat:"Hoodies", brand:"By Dineral", model:"Bathe in Pape Blanco Camo", desc:"Camuflaje blanco y gris con signos de dólar, capucha con cierre completo y cara bordada. En la espalda, “Bathe in Pape!” con letras de colores en felpa.", price:1500, wholesale:{group:"Hoodies preventa By Dineral", min:10, price:1250, note:"Puedes combinar los dos colores.", unit:"hoodie de preventa"}, sizes:null, preventa:true, video:"vid/dineral-blanco.mp4"},
   // Tenis. Precio único; tallas a preguntar por WhatsApp.
   {no:37, cat:"Tenis", brand:"New Balance", model:"9060 Gris Castlerock", desc:"Gamuza y malla en tonos gris, suela gruesa con cápsulas ABZORB y clip translúcido en el talón.", price:1000, y:0.62},
   {no:38, cat:"Tenis", brand:"Nike",        model:"Air Max 270 Triple Black", desc:"Todo negro, tejido transpirable y la cámara de aire grande en el talón.", price:1000, y:0.62},
@@ -603,6 +603,8 @@ const PRODUCTS = [
   {no:41, cat:"Tenis", brand:"Jordan",      model:"Air Jordan 1 High OG Palomino", desc:"Bota alta en piel negra con gamuza café, entresuela color hueso y suela café.", price:1000, y:0.57},
   // Pants (solo aparecen en "Todo").
   {no:45, cat:"Pants", brand:"Asaali", model:"Pants Asaali Rojo", desc:"Solo pants, precio por pieza. Rojo con “Asaali” bordado en blanco, estampado de caras “Asaali Jean Company Los Angeles” en las piernas, cordón y ajuste en el tobillo.", price:700, y:0.45},
+  // Joyería.
+  {no:46, cat:"Joyería", brand:"Joyería", model:"Pulso tipo Rolex", desc:"Pulso dorado de eslabones estilo Rolex con broche desplegable. Viene en su empaque.", price:200, wholesale:{group:"Pulsos tipo Rolex", min:10, price:150, unit:"pulso"}, y:0.62},
   // Jerseys de fútbol.
   {no:42, cat:"Jerseys Fútbol", brand:"Adidas", model:"Jersey Argentina", desc:"Local blanca y celeste con 3 estrellas, escudo AFA dorado, parche de Campeones del Mundo 2022 y el 10.", price:300, y:0.52}
 ];
@@ -617,8 +619,8 @@ const CAP_TIERS = [
 PRODUCTS.forEach((p) => { if (p.cat === "Gorras") p.price = CAP_TIERS[0].price; });
 const tierFor = (caps) => CAP_TIERS.filter((t) => caps >= t.min).pop() || CAP_TIERS[0];
 const nextTier = (caps) => CAP_TIERS.find((t) => t.min > caps) || null;
-const BRAND_ORDER = ["Barbas Hats","Rude Awakenings","Gallo Fino x CT","Rico o Muerto","Baez","Asaali","Axx Mafia","By Dineral","Paionazo","Sp5der","New Balance","Nike","Jordan","Adidas","Otras marcas"];
-const CATS = ["Todo","Alex Caps","Gorras","Hoodies","Tenis","Jerseys Fútbol"];
+const BRAND_ORDER = ["Barbas Hats","Rude Awakenings","Gallo Fino x CT","Rico o Muerto","Baez","Asaali","Axx Mafia","By Dineral","Paionazo","Sp5der","New Balance","Nike","Jordan","Adidas","Joyería","Otras marcas"];
+const CATS = ["Todo","Alex Caps","Gorras","Hoodies","Tenis","Jerseys Fútbol","Joyería"];
 
 /* Sección "Alex Caps": videos de TikTok. Para agregar uno: {video:"vid/tt/nombre.mp4", thumb:"img/tt/nombre.jpg", title:"Texto corto"} */
 const TIKTOKS = [
@@ -645,9 +647,9 @@ const keyOf = (no, size) => `${no}|${size || ""}`;
 const parseKey = (k) => { const [no, size] = String(k).split("|"); return { no: +no, size: size || "" }; };
 const cartKeys = () => Object.keys(cart).sort((a, b) => parseKey(a).no - parseKey(b).no || a.localeCompare(b));
 const inCartNo = (no) => cartKeys().some((k) => parseKey(k).no === no);
-const noun = (p) => p.cat === "Hoodies" ? "hoodie" : p.cat === "Tenis" ? "tenis" : p.cat === "Jerseys Fútbol" ? "jersey" : p.cat === "Pants" ? "pants" : "gorra";
-const Noun = (p) => ({ hoodie: "Hoodie", tenis: "Tenis", jersey: "Jersey", pants: "Pants", gorra: "Gorra" })[noun(p)];
-const withArt = (p) => ({ hoodie: "el hoodie", tenis: "los tenis", jersey: "el jersey", pants: "los pants", gorra: "la gorra" })[noun(p)];
+const noun = (p) => p.cat === "Hoodies" ? "hoodie" : p.cat === "Tenis" ? "tenis" : p.cat === "Jerseys Fútbol" ? "jersey" : p.cat === "Pants" ? "pants" : p.cat === "Joyería" ? "pulso" : "gorra";
+const Noun = (p) => ({ hoodie: "Hoodie", tenis: "Tenis", jersey: "Jersey", pants: "Pants", pulso: "Pulso", gorra: "Gorra" })[noun(p)];
+const withArt = (p) => ({ hoodie: "el hoodie", tenis: "los tenis", jersey: "el jersey", pants: "los pants", pulso: "el pulso", gorra: "la gorra" })[noun(p)];
 const askSize = (p) => p.cat === "Tenis" || p.cat === "Jerseys Fútbol" || p.cat === "Pants";
 const SHOE_SIZES = "Pregunta por tallas disponibles";
 let cart = {};
@@ -856,8 +858,8 @@ function openModal(no){
   $("#mDesc").textContent = p.desc;
   $("#mPrice").innerHTML = p.price == null ? `<span class="price ask">Precio por WhatsApp</span>`
     : p.cat === "Gorras" ? `${money(p.price)} <span class="sz">c/u menudeo</span>${tierTable(capUnits())}`
-    : p.wholesale ? `${money(p.price)} <span class="sz">c/u menudeo</span><div class="wh" style="font-family:var(--body);font-size:14px;margin-top:6px">Mayoreo: ${money(p.wholesale.price)} c/u a partir de ${p.wholesale.min} piezas. Puedes combinar los dos colores.</div>` : money(p.price);
-  $("#mQty").textContent = mQty;
+    : p.wholesale ? `${money(p.price)} <span class="sz">c/u menudeo</span><div class="wh" style="font-family:var(--body);font-size:14px;margin-top:6px">Mayoreo: ${money(p.wholesale.price)} c/u a partir de ${p.wholesale.min} piezas.${p.wholesale.note ? " " + p.wholesale.note : ""}</div>` : money(p.price);
+  $("#mQty").textContent = mQty; modalWholesale();
   const u = waUrl(`Hola ${STORE.name}, me interesa ${withArt(p)} Nº ${pad(p.no)} ${p.model} (${p.brand})${p.preventa ? " en preventa" : ""}. ¿Está disponible?`);
   const pre = !!p.preventa;
   $("#mAdd").parentElement.hidden = pre;
@@ -888,8 +890,13 @@ $("#mVid").addEventListener("ended", () => {
 });
 function closeModal(){ clearTimeout(rotT); $("#mVid").pause(); $("#modal").classList.remove("open"); if (!$("#drawer").classList.contains("open")) $("#scrim").classList.remove("open"); if (lastFocus) lastFocus.focus(); }
 $("#mClose").addEventListener("click", closeModal);
-$("#mMinus").addEventListener("click", () => { mQty = Math.max(1, mQty - 1); $("#mQty").textContent = mQty; });
-$("#mPlus").addEventListener("click", () => { mQty = Math.min(500, mQty + 1); $("#mQty").textContent = mQty; });
+function modalWholesale(){
+  const p = current; if (!p || !p.wholesale || p.preventa) return;
+  const on = mQty + groupUnits(p.wholesale.group) >= p.wholesale.min;
+  $("#mPrice").innerHTML = `${money(on ? p.wholesale.price : p.price)} <span class="sz">c/u ${on ? "mayoreo" : "menudeo"}</span><div class="wh" style="font-family:var(--body);font-size:14px;margin-top:6px">${on ? `¡Precio de mayoreo! Llevas ${mQty + groupUnits(p.wholesale.group)} piezas.` : `Mayoreo: ${money(p.wholesale.price)} c/u a partir de ${p.wholesale.min} piezas. Te faltan ${p.wholesale.min - mQty - groupUnits(p.wholesale.group)}.`}${p.wholesale.note ? " " + p.wholesale.note : ""}</div>`;
+}
+$("#mMinus").addEventListener("click", () => { mQty = Math.max(1, mQty - 1); $("#mQty").textContent = mQty; modalWholesale(); });
+$("#mPlus").addEventListener("click", () => { mQty = Math.min(500, mQty + 1); $("#mQty").textContent = mQty; modalWholesale(); });
 $("#mSizes").addEventListener("click", (e) => { const b = e.target.closest("[data-size]"); if (!b) return; mSize = b.dataset.size; renderSizes(); });
 $("#mAdd").addEventListener("click", () => {
   if (current.sizes && current.sizes.length > 1 && !mSize) { toast("Elige tu talla"); return; }
@@ -903,7 +910,7 @@ function addToCart(no, n, size){
   const before = tierFor(capUnits());
   const p0 = byNo(no), wBefore = p0.wholesale ? unitPrice(p0) : null;
   cart[k] = Math.min(500, (cart[k] || 0) + n); saveCart(); renderCart(); renderGrid();
-  if (p0.wholesale && unitPrice(p0) < wBefore) { toast(`¡Ya tienes precio de mayoreo! ${money(p0.wholesale.price)} por hoodie de preventa`); return; }
+  if (p0.wholesale && unitPrice(p0) < wBefore) { toast(`¡Ya tienes precio de mayoreo! ${money(p0.wholesale.price)} por ${p0.wholesale.unit || "pieza"}`); return; }
   const after = tierFor(capUnits());
   if (after !== before && after.price < before.price) { toast(`¡Ya tienes precio ${after.name.toLowerCase()}! ${money(after.price)} por gorra`); return; }
   toast(`Agregaste Nº ${pad(no)} ${byNo(no).model}${size ? " talla " + size : ""}`);
