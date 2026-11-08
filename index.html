@@ -226,6 +226,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 .modal .shot{background:#000;min-height:360px}
 .modal .shot img{width:100%;height:100%;object-fit:contain;max-height:80vh}
 .sz{font-size:13px;font-weight:600;color:var(--muted)}
+.sz-ask{font-size:11px;font-weight:500;font-style:italic;letter-spacing:.01em}
 .sizes{display:flex;flex-wrap:wrap;gap:8px}
 .size{min-width:52px;height:44px;padding:0 12px;border-radius:10px;border:1px solid var(--line);background:transparent;font-weight:700;cursor:pointer}
 .size:hover{border-color:var(--paper)}
@@ -587,7 +588,13 @@ const PRODUCTS = [
   {no:33, cat:"Hoodies", brand:"By Dineral", model:"Bathe in Pape",          desc:"Camuflaje rosa con signos de dólar, capucha con cierre completo y cara bordada. En la espalda, “Bathe in Pape!” en felpa.", price:1200, sizes:["2XL"]},
   {no:34, cat:"Hoodies", brand:"Axx Mafia",  model:"Time Is Money",          desc:"Mitad negro y mitad estampado de billetes de 100, capucha con cierre completo. En la espalda, “time is money”.", price:1350, sizes:["S","M","L","XL"], video:"vid/axx-mafia-2.mp4"},
   {no:35, cat:"Hoodies", brand:"Paionazo",   model:"Paionazo Payaso",        desc:"Negro con pedrería en todo el cuerpo, capucha con cierre completo y cara de payaso. En la espalda, payaso con vasos.", price:1350, sizes:["S","XL"], video:"vid/paionazo.mp4"},
-  {no:36, cat:"Hoodies", brand:"Sp5der",     model:"Sp5der Negro",           desc:"Negro con letras “spöder” al frente, pedrería fina en todo el cuerpo y capucha. Míralo puesto en el video.", price:1350, sizes:["S","M","L","XL","2XL"], video:"vid/sp5der.mp4", poster:"vid/sp5der-poster.jpg"}
+  {no:36, cat:"Hoodies", brand:"Sp5der",     model:"Sp5der Negro",           desc:"Negro con letras “spöder” al frente, pedrería fina en todo el cuerpo y capucha. Míralo puesto en el video.", price:1350, sizes:["S","M","L","XL","2XL"], video:"vid/sp5der.mp4", poster:"vid/sp5der-poster.jpg"},
+  // Tenis. Precio único; tallas a preguntar por WhatsApp.
+  {no:37, cat:"Tenis", brand:"New Balance", model:"9060 Gris Castlerock", desc:"Gamuza y malla en tonos gris, suela gruesa con cápsulas ABZORB y clip translúcido en el talón.", price:1000, y:0.62},
+  {no:38, cat:"Tenis", brand:"Nike",        model:"Air Max 270 Triple Black", desc:"Todo negro, tejido transpirable y la cámara de aire grande en el talón.", price:1000, y:0.62},
+  {no:39, cat:"Tenis", brand:"Nike",        model:"Air Max 720 Triple Black", desc:"Todo negro, tejido ligero y cámara de aire a todo lo largo de la suela.", price:1000, y:0.70},
+  {no:40, cat:"Tenis", brand:"Nike",        model:"Air Force 1 '07 Triple Black", desc:"Piel negra de pies a cabeza. El clásico AF1 para diario.", price:1000, y:0.56},
+  {no:41, cat:"Tenis", brand:"Jordan",      model:"Air Jordan 1 High OG Palomino", desc:"Bota alta en piel negra con gamuza café, entresuela color hueso y suela café.", price:1000, y:0.57}
 ];
 PRODUCTS.forEach((p) => { if (!p.cat) p.cat = "Gorras"; });
 
@@ -600,8 +607,8 @@ const CAP_TIERS = [
 PRODUCTS.forEach((p) => { if (p.cat === "Gorras") p.price = CAP_TIERS[0].price; });
 const tierFor = (caps) => CAP_TIERS.filter((t) => caps >= t.min).pop() || CAP_TIERS[0];
 const nextTier = (caps) => CAP_TIERS.find((t) => t.min > caps) || null;
-const BRAND_ORDER = ["Barbas Hats","Rude Awakenings","Gallo Fino x CT","Rico o Muerto","Baez","Asaali","Axx Mafia","By Dineral","Paionazo","Sp5der","Otras marcas"];
-const CATS = ["Todo","Alex Caps","Gorras","Hoodies"];
+const BRAND_ORDER = ["Barbas Hats","Rude Awakenings","Gallo Fino x CT","Rico o Muerto","Baez","Asaali","Axx Mafia","By Dineral","Paionazo","Sp5der","New Balance","Nike","Jordan","Otras marcas"];
+const CATS = ["Todo","Alex Caps","Gorras","Hoodies","Tenis"];
 
 /* Sección "Alex Caps": videos de TikTok. Para agregar uno: {video:"vid/tt/nombre.mp4", thumb:"img/tt/nombre.jpg", title:"Texto corto"} */
 const TIKTOKS = [
@@ -628,7 +635,10 @@ const keyOf = (no, size) => `${no}|${size || ""}`;
 const parseKey = (k) => { const [no, size] = String(k).split("|"); return { no: +no, size: size || "" }; };
 const cartKeys = () => Object.keys(cart).sort((a, b) => parseKey(a).no - parseKey(b).no || a.localeCompare(b));
 const inCartNo = (no) => cartKeys().some((k) => parseKey(k).no === no);
-const noun = (p) => p.cat === "Hoodies" ? "hoodie" : "gorra";
+const noun = (p) => p.cat === "Hoodies" ? "hoodie" : p.cat === "Tenis" ? "tenis" : "gorra";
+const Noun = (p) => ({ hoodie: "Hoodie", tenis: "Tenis", gorra: "Gorra" })[noun(p)];
+const withArt = (p) => ({ hoodie: "el hoodie", tenis: "los tenis", gorra: "la gorra" })[noun(p)];
+const SHOE_SIZES = "Pregunta por tallas disponibles";
 let cart = {};
 try { cart = JSON.parse(localStorage.getItem("alexcaps-cart") || "{}") || {}; } catch (e) { cart = {}; }
 Object.keys(cart).forEach((k) => { if (!String(k).includes("|")) { cart[k + "|"] = cart[k]; delete cart[k]; } });
@@ -742,14 +752,14 @@ function renderGrid(){
   $("#grid").innerHTML = list.map((p) => {
     const has = inCartNo(p.no);
     const needsSize = p.sizes && p.sizes.length > 1;
-    const sizeLine = p.cat === "Hoodies" ? `<div class="sz">${p.sizes ? "Tallas: " + p.sizes.join(" · ") : "Tallas por confirmar"}</div>` : "";
+    const sizeLine = p.cat === "Hoodies" ? `<div class="sz">${p.sizes ? "Tallas: " + p.sizes.join(" · ") : "Tallas por confirmar"}</div>` : p.cat === "Tenis" ? `<div class="sz sz-ask">${SHOE_SIZES}</div>` : "";
     const imgStyle = p.cover ? "object-position:50% 50%" : p.cat === "Hoodies" ? "object-fit:contain" : `object-position:50% ${pos(p)}%`;
     const btn = needsSize
       ? `<button class="add${has ? " in" : ""}" type="button" data-open="${p.no}">${has ? "En carrito ✓" : "Elegir talla"}</button>`
       : `<button class="add${has ? " in" : ""}" type="button" data-add="${p.no}">${has ? "En carrito ✓" : "Agregar"}</button>`;
     return `<article class="card">
       <button class="pic" type="button" data-open="${p.no}" aria-label="Ver ${p.model} en grande"${p.video ? ` data-cycle data-vstart="${p.vstart || 0}"` : ""}>
-        <img src="${img(p)}" alt="${noun(p) === "hoodie" ? "Hoodie" : "Gorra"} ${p.model}" loading="lazy" style="${imgStyle}">
+        <img src="${img(p)}" alt="${Noun(p)} ${p.model}" loading="lazy" style="${imgStyle}">
         ${p.video ? `<video class="card-vid" src="${p.video}" muted playsinline preload="none" aria-hidden="true" tabindex="-1"></video>` : ""}
         <span class="tag-no">Nº ${pad(p.no)}</span>
         ${p.video ? `<span class="tag-vid"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg>Ver video</span>` : ""}
@@ -805,6 +815,7 @@ $("#grid").addEventListener("click", (e) => {
 let current = null, mQty = 1, mSize = "", lastFocus = null;
 function renderSizes(){
   const p = current;
+  if (p.cat === "Tenis") { $("#mSizes").innerHTML = `<div class="sz sz-ask">${SHOE_SIZES}. Dinos tu talla en la nota del pedido o por WhatsApp.</div>`; return; }
   if (p.cat !== "Hoodies") { $("#mSizes").innerHTML = ""; return; }
   if (!p.sizes) { $("#mSizes").innerHTML = `<div class="sz">Tallas por confirmar. Dinos tu talla en la nota del pedido.</div>`; return; }
   $("#mSizes").innerHTML = `<div class="sz">Talla</div><div class="sizes" role="group" aria-label="Elige tu talla">${p.sizes.map((s) => `<button class="size" type="button" data-size="${s}" aria-pressed="${mSize === s}">${s}</button>`).join("")}</div>`;
@@ -813,7 +824,7 @@ function openModal(no){
   const p = byNo(no); current = p; mQty = 1; lastFocus = document.activeElement;
   mSize = p.sizes && p.sizes.length === 1 ? p.sizes[0] : "";
   renderSizes();
-  $("#mImg").src = img(p); $("#mImg").alt = `${noun(p) === "hoodie" ? "Hoodie" : "Gorra"} ${p.model}`;
+  $("#mImg").src = img(p); $("#mImg").alt = `${Noun(p)} ${p.model}`;
   const v = $("#mVid");
   autoRot = true; clearTimeout(rotT);
   if (p.video) {
@@ -827,7 +838,7 @@ function openModal(no){
   $("#mPrice").innerHTML = p.price == null ? `<span class="price ask">Precio por WhatsApp</span>`
     : p.cat === "Gorras" ? `${money(p.price)} <span class="sz">c/u menudeo</span>${tierTable(capUnits())}` : money(p.price);
   $("#mQty").textContent = mQty;
-  const u = waUrl(`Hola ${STORE.name}, me interesa ${noun(p) === "hoodie" ? "el hoodie" : "la gorra"} Nº ${pad(p.no)} ${p.model} (${p.brand}). ¿Está disponible?`);
+  const u = waUrl(`Hola ${STORE.name}, me interesa ${withArt(p)} Nº ${pad(p.no)} ${p.model} (${p.brand}). ¿Está disponible?`);
   $("#mWa").href = u || "#contacto"; $("#mWa").toggleAttribute("aria-disabled", !u);
   $("#scrim").classList.add("open"); $("#modal").classList.add("open");
   $("#mClose").focus();
@@ -878,7 +889,7 @@ function lineItems(){
     const u = p.cat === "Gorras" ? tier.price : p.price;
     return { k, p, size, q: cart[k], u }; }).filter(Boolean);
 }
-function sizeText(it){ return it.p.cat === "Hoodies" ? (it.size ? `talla ${it.size}` : "talla por confirmar") : ""; }
+function sizeText(it){ return it.p.cat === "Hoodies" ? (it.size ? `talla ${it.size}` : "talla por confirmar") : it.p.cat === "Tenis" ? "talla por confirmar" : ""; }
 function orderText(){
   const items = lineItems();
   const lines = items.map((it) => `• ${it.q} x Nº ${pad(it.p.no)} ${it.p.model} (${it.p.brand})${sizeText(it) ? ", " + sizeText(it) : ""}${it.u != null ? ` — ${money(it.u)} c/u = ${money(it.u * it.q)}` : " — precio por confirmar"}`);
