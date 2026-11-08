@@ -594,7 +594,9 @@ const PRODUCTS = [
   {no:38, cat:"Tenis", brand:"Nike",        model:"Air Max 270 Triple Black", desc:"Todo negro, tejido transpirable y la cámara de aire grande en el talón.", price:1000, y:0.62},
   {no:39, cat:"Tenis", brand:"Nike",        model:"Air Max 720 Triple Black", desc:"Todo negro, tejido ligero y cámara de aire a todo lo largo de la suela.", price:1000, y:0.70},
   {no:40, cat:"Tenis", brand:"Nike",        model:"Air Force 1 '07 Triple Black", desc:"Piel negra de pies a cabeza. El clásico AF1 para diario.", price:1000, y:0.56},
-  {no:41, cat:"Tenis", brand:"Jordan",      model:"Air Jordan 1 High OG Palomino", desc:"Bota alta en piel negra con gamuza café, entresuela color hueso y suela café.", price:1000, y:0.57}
+  {no:41, cat:"Tenis", brand:"Jordan",      model:"Air Jordan 1 High OG Palomino", desc:"Bota alta en piel negra con gamuza café, entresuela color hueso y suela café.", price:1000, y:0.57},
+  // Jerseys de fútbol.
+  {no:42, cat:"Jerseys Fútbol", brand:"Adidas", model:"Jersey Argentina", desc:"Local blanca y celeste con 3 estrellas, escudo AFA dorado, parche de Campeones del Mundo 2022 y el 10.", price:300, y:0.52}
 ];
 PRODUCTS.forEach((p) => { if (!p.cat) p.cat = "Gorras"; });
 
@@ -607,8 +609,8 @@ const CAP_TIERS = [
 PRODUCTS.forEach((p) => { if (p.cat === "Gorras") p.price = CAP_TIERS[0].price; });
 const tierFor = (caps) => CAP_TIERS.filter((t) => caps >= t.min).pop() || CAP_TIERS[0];
 const nextTier = (caps) => CAP_TIERS.find((t) => t.min > caps) || null;
-const BRAND_ORDER = ["Barbas Hats","Rude Awakenings","Gallo Fino x CT","Rico o Muerto","Baez","Asaali","Axx Mafia","By Dineral","Paionazo","Sp5der","New Balance","Nike","Jordan","Otras marcas"];
-const CATS = ["Todo","Alex Caps","Gorras","Hoodies","Tenis"];
+const BRAND_ORDER = ["Barbas Hats","Rude Awakenings","Gallo Fino x CT","Rico o Muerto","Baez","Asaali","Axx Mafia","By Dineral","Paionazo","Sp5der","New Balance","Nike","Jordan","Adidas","Otras marcas"];
+const CATS = ["Todo","Alex Caps","Gorras","Hoodies","Tenis","Jerseys Fútbol"];
 
 /* Sección "Alex Caps": videos de TikTok. Para agregar uno: {video:"vid/tt/nombre.mp4", thumb:"img/tt/nombre.jpg", title:"Texto corto"} */
 const TIKTOKS = [
@@ -635,9 +637,10 @@ const keyOf = (no, size) => `${no}|${size || ""}`;
 const parseKey = (k) => { const [no, size] = String(k).split("|"); return { no: +no, size: size || "" }; };
 const cartKeys = () => Object.keys(cart).sort((a, b) => parseKey(a).no - parseKey(b).no || a.localeCompare(b));
 const inCartNo = (no) => cartKeys().some((k) => parseKey(k).no === no);
-const noun = (p) => p.cat === "Hoodies" ? "hoodie" : p.cat === "Tenis" ? "tenis" : "gorra";
-const Noun = (p) => ({ hoodie: "Hoodie", tenis: "Tenis", gorra: "Gorra" })[noun(p)];
-const withArt = (p) => ({ hoodie: "el hoodie", tenis: "los tenis", gorra: "la gorra" })[noun(p)];
+const noun = (p) => p.cat === "Hoodies" ? "hoodie" : p.cat === "Tenis" ? "tenis" : p.cat === "Jerseys Fútbol" ? "jersey" : "gorra";
+const Noun = (p) => ({ hoodie: "Hoodie", tenis: "Tenis", jersey: "Jersey", gorra: "Gorra" })[noun(p)];
+const withArt = (p) => ({ hoodie: "el hoodie", tenis: "los tenis", jersey: "el jersey", gorra: "la gorra" })[noun(p)];
+const askSize = (p) => p.cat === "Tenis" || p.cat === "Jerseys Fútbol";
 const SHOE_SIZES = "Pregunta por tallas disponibles";
 let cart = {};
 try { cart = JSON.parse(localStorage.getItem("alexcaps-cart") || "{}") || {}; } catch (e) { cart = {}; }
@@ -752,7 +755,7 @@ function renderGrid(){
   $("#grid").innerHTML = list.map((p) => {
     const has = inCartNo(p.no);
     const needsSize = p.sizes && p.sizes.length > 1;
-    const sizeLine = p.cat === "Hoodies" ? `<div class="sz">${p.sizes ? "Tallas: " + p.sizes.join(" · ") : "Tallas por confirmar"}</div>` : p.cat === "Tenis" ? `<div class="sz sz-ask">${SHOE_SIZES}</div>` : "";
+    const sizeLine = p.cat === "Hoodies" ? `<div class="sz">${p.sizes ? "Tallas: " + p.sizes.join(" · ") : "Tallas por confirmar"}</div>` : askSize(p) ? `<div class="sz sz-ask">${SHOE_SIZES}</div>` : "";
     const imgStyle = p.cover ? "object-position:50% 50%" : p.cat === "Hoodies" ? "object-fit:contain" : `object-position:50% ${pos(p)}%`;
     const btn = needsSize
       ? `<button class="add${has ? " in" : ""}" type="button" data-open="${p.no}">${has ? "En carrito ✓" : "Elegir talla"}</button>`
@@ -815,7 +818,7 @@ $("#grid").addEventListener("click", (e) => {
 let current = null, mQty = 1, mSize = "", lastFocus = null;
 function renderSizes(){
   const p = current;
-  if (p.cat === "Tenis") { $("#mSizes").innerHTML = `<div class="sz sz-ask">${SHOE_SIZES}. Dinos tu talla en la nota del pedido o por WhatsApp.</div>`; return; }
+  if (askSize(p)) { $("#mSizes").innerHTML = `<div class="sz sz-ask">${SHOE_SIZES}. Dinos tu talla en la nota del pedido o por WhatsApp.</div>`; return; }
   if (p.cat !== "Hoodies") { $("#mSizes").innerHTML = ""; return; }
   if (!p.sizes) { $("#mSizes").innerHTML = `<div class="sz">Tallas por confirmar. Dinos tu talla en la nota del pedido.</div>`; return; }
   $("#mSizes").innerHTML = `<div class="sz">Talla</div><div class="sizes" role="group" aria-label="Elige tu talla">${p.sizes.map((s) => `<button class="size" type="button" data-size="${s}" aria-pressed="${mSize === s}">${s}</button>`).join("")}</div>`;
@@ -889,7 +892,7 @@ function lineItems(){
     const u = p.cat === "Gorras" ? tier.price : p.price;
     return { k, p, size, q: cart[k], u }; }).filter(Boolean);
 }
-function sizeText(it){ return it.p.cat === "Hoodies" ? (it.size ? `talla ${it.size}` : "talla por confirmar") : it.p.cat === "Tenis" ? "talla por confirmar" : ""; }
+function sizeText(it){ return it.p.cat === "Hoodies" ? (it.size ? `talla ${it.size}` : "talla por confirmar") : askSize(it.p) ? "talla por confirmar" : ""; }
 function orderText(){
   const items = lineItems();
   const lines = items.map((it) => `• ${it.q} x Nº ${pad(it.p.no)} ${it.p.model} (${it.p.brand})${sizeText(it) ? ", " + sizeText(it) : ""}${it.u != null ? ` — ${money(it.u)} c/u = ${money(it.u * it.q)}` : " — precio por confirmar"}`);
