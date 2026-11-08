@@ -601,6 +601,8 @@ const PRODUCTS = [
   {no:39, cat:"Tenis", brand:"Nike",        model:"Air Max 720 Triple Black", desc:"Todo negro, tejido ligero y cámara de aire a todo lo largo de la suela.", price:1000, y:0.70},
   {no:40, cat:"Tenis", brand:"Nike",        model:"Air Force 1 '07 Triple Black", desc:"Piel negra de pies a cabeza. El clásico AF1 para diario.", price:1000, y:0.56},
   {no:41, cat:"Tenis", brand:"Jordan",      model:"Air Jordan 1 High OG Palomino", desc:"Bota alta en piel negra con gamuza café, entresuela color hueso y suela café.", price:1000, y:0.57},
+  // Pants (solo aparecen en "Todo").
+  {no:45, cat:"Pants", brand:"Asaali", model:"Pants Asaali Rojo", desc:"Solo pants, precio por pieza. Rojo con “Asaali” bordado en blanco, estampado de caras “Asaali Jean Company Los Angeles” en las piernas, cordón y ajuste en el tobillo.", price:700, y:0.45},
   // Jerseys de fútbol.
   {no:42, cat:"Jerseys Fútbol", brand:"Adidas", model:"Jersey Argentina", desc:"Local blanca y celeste con 3 estrellas, escudo AFA dorado, parche de Campeones del Mundo 2022 y el 10.", price:300, y:0.52}
 ];
@@ -643,10 +645,10 @@ const keyOf = (no, size) => `${no}|${size || ""}`;
 const parseKey = (k) => { const [no, size] = String(k).split("|"); return { no: +no, size: size || "" }; };
 const cartKeys = () => Object.keys(cart).sort((a, b) => parseKey(a).no - parseKey(b).no || a.localeCompare(b));
 const inCartNo = (no) => cartKeys().some((k) => parseKey(k).no === no);
-const noun = (p) => p.cat === "Hoodies" ? "hoodie" : p.cat === "Tenis" ? "tenis" : p.cat === "Jerseys Fútbol" ? "jersey" : "gorra";
-const Noun = (p) => ({ hoodie: "Hoodie", tenis: "Tenis", jersey: "Jersey", gorra: "Gorra" })[noun(p)];
-const withArt = (p) => ({ hoodie: "el hoodie", tenis: "los tenis", jersey: "el jersey", gorra: "la gorra" })[noun(p)];
-const askSize = (p) => p.cat === "Tenis" || p.cat === "Jerseys Fútbol";
+const noun = (p) => p.cat === "Hoodies" ? "hoodie" : p.cat === "Tenis" ? "tenis" : p.cat === "Jerseys Fútbol" ? "jersey" : p.cat === "Pants" ? "pants" : "gorra";
+const Noun = (p) => ({ hoodie: "Hoodie", tenis: "Tenis", jersey: "Jersey", pants: "Pants", gorra: "Gorra" })[noun(p)];
+const withArt = (p) => ({ hoodie: "el hoodie", tenis: "los tenis", jersey: "el jersey", pants: "los pants", gorra: "la gorra" })[noun(p)];
+const askSize = (p) => p.cat === "Tenis" || p.cat === "Jerseys Fútbol" || p.cat === "Pants";
 const SHOE_SIZES = "Pregunta por tallas disponibles";
 let cart = {};
 try { cart = JSON.parse(localStorage.getItem("alexcaps-cart") || "{}") || {}; } catch (e) { cart = {}; }
