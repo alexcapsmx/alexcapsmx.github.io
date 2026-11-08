@@ -191,6 +191,15 @@ main,footer{position:relative;z-index:1}
 .bar{height:8px;background:var(--panel-2);border-radius:999px;overflow:hidden}
 .bar span{display:block;height:100%;background:var(--red);border-radius:999px}
 .social-top{padding:8px 0 0}
+.promo{display:flex;flex-direction:column;gap:6px;margin-top:22px;padding:16px 18px;background:linear-gradient(135deg,rgba(255,74,61,.22),rgba(255,74,61,.06));border:1px solid var(--red);border-radius:14px;max-width:520px;color:var(--paper);text-decoration:none}
+.promo:hover{border-color:var(--paper)}
+.promo-tag{align-self:flex-start;background:var(--red);color:var(--ink);font-weight:800;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;border-radius:999px}
+.promo strong{font-size:17px;line-height:1.25}
+.promo-prices{display:flex;flex-wrap:wrap;gap:8px 18px;font-family:var(--display);font-size:24px;line-height:1.1}
+.promo-prices b{font-family:var(--body);font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-right:6px}
+.promo-sub{color:var(--muted);font-size:13px}
+.tag-promo.low{top:46px}
+.tag-promo{position:absolute;right:12px;top:12px;z-index:2;background:var(--red);color:var(--ink);font-weight:800;font-size:12px;padding:6px 9px;border-radius:999px}
 .ship{display:flex;align-items:center;gap:14px;margin-top:22px;padding:14px 18px;background:var(--panel);border:1px solid var(--line);border-radius:14px;max-width:520px}
 .ship-ic{width:44px;height:44px;border-radius:12px;background:var(--red);color:var(--ink);display:grid;place-items:center;flex:0 0 auto}
 .ship strong{font-size:17px}
@@ -250,6 +259,9 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
   .card:hover{transform:none}
   .tag-no{top:8px;left:8px;font-size:13px;padding:5px 7px;border-radius:6px}
   .tag-pre{top:8px;right:8px;font-size:10px;padding:4px 7px}
+  .tag-promo{right:8px;top:8px;font-size:10px;padding:4px 7px}
+  .tag-promo.low{top:34px}
+  .promo-prices{font-size:20px}
   .tag-vid{left:8px;bottom:8px;font-size:11px;padding:5px 8px;gap:4px}
   .tag-vid svg{width:9px;height:9px}
   .card .body{padding:10px 10px 12px;gap:4px}
@@ -340,6 +352,12 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
           <a class="btn btn-red" href="#tienda">Ver la tienda</a>
           <a class="btn btn-ghost" href="#como-comprar">Cómo comprar</a>
         </div>
+        <a class="promo" id="promoBox" href="#tienda" data-promo-go hidden>
+          <span class="promo-tag">Promoción activa ✅</span>
+          <strong>Hoodies Asaali, By Dineral, Paionazo, Axx Mafia y Sp5der</strong>
+          <span class="promo-prices"><span><b>1 pieza</b> $1,350</span><span><b>Desde 3 piezas</b> $1,150 c/u</span></span>
+          <span class="promo-sub" id="promoEnd"></span>
+        </a>
         <div class="ship">
           <span class="ship-ic" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="1.8"/><circle cx="17.5" cy="18" r="1.8"/></svg></span>
           <span><strong>Hacemos envíos nacionales e internacionales</strong><br><span class="ship-sub">Pide por WhatsApp y te lo mandamos a donde estés.</span></span>
@@ -617,6 +635,19 @@ const CAP_TIERS = [
   { min: 25, price: 250, name: "Mayoreo 25+" }
 ];
 PRODUCTS.forEach((p) => { if (p.cat === "Gorras") p.price = CAP_TIERS[0].price; });
+/* ===== Promoción temporal de hoodies (2 semanas). Al terminar, todo vuelve solo a sus precios normales. ===== */
+const PROMO = {
+  start: new Date("2026-11-07T00:00:00-06:00"),
+  end:   new Date("2026-11-21T23:59:59-06:00"),
+  brands: ["Asaali","By Dineral","Paionazo","Axx Mafia","Sp5der"],
+  price: 1350, min: 3, promoPrice: 1150,
+};
+const promoActive = () => { const n = Date.now(); return n >= PROMO.start.getTime() && n <= PROMO.end.getTime(); };
+if (promoActive()) PRODUCTS.forEach((p) => {
+  if (p.cat !== "Hoodies" || !PROMO.brands.includes(p.brand)) return;
+  p.promo = true; p.price = PROMO.price;
+  p.wholesale = { group: "Promo hoodies", min: PROMO.min, price: PROMO.promoPrice, unit: "hoodie", promo: true, note: "Puedes combinar modelos de Asaali, By Dineral, Paionazo, Axx Mafia y Sp5der." };
+});
 const tierFor = (caps) => CAP_TIERS.filter((t) => caps >= t.min).pop() || CAP_TIERS[0];
 const nextTier = (caps) => CAP_TIERS.find((t) => t.min > caps) || null;
 const BRAND_ORDER = ["Barbas Hats","Rude Awakenings","Gallo Fino x CT","Rico o Muerto","Baez","Asaali","Axx Mafia","By Dineral","Paionazo","Sp5der","New Balance","Nike","Jordan","Adidas","Joyería","Otras marcas"];
@@ -660,6 +691,12 @@ const saveCart = () => { try { localStorage.setItem("alexcaps-cart", JSON.string
 /* ===== Cinta y conteos ===== */
 const brandsPresent = BRAND_ORDER.filter((b) => PRODUCTS.some((p) => p.brand === b));
 $("#statModels").textContent = PRODUCTS.length;
+if (promoActive()) {
+  $("#promoBox").hidden = false;
+  const days = Math.max(1, Math.ceil((PROMO.end.getTime() - Date.now()) / 86400000));
+  $("#promoEnd").textContent = `Válida hasta el sábado 21 de noviembre · ${days === 1 ? "último día" : "quedan " + days + " días"}. Puedes combinar modelos y marcas.`;
+  $("#promoBox").addEventListener("click", () => { state.cat = "Hoodies"; state.brand = "Todas"; renderChips(); renderGrid(); });
+}
 
 /* ===== Filtros ===== */
 const inCat = (p) => state.cat === "Todo" || p.cat === state.cat;
@@ -708,11 +745,11 @@ function visible(){
 function groupUnits(g){ return cartKeys().reduce((t, k) => { const p = byNo(parseKey(k).no); return t + (p && p.wholesale && p.wholesale.group === g ? cart[k] : 0); }, 0); }
 const unitPrice = (p) => p.cat === "Gorras" ? tierFor(capUnits()).price : p.wholesale && groupUnits(p.wholesale.group) >= p.wholesale.min ? p.wholesale.price : p.price;
 const WA_ICON = `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.3-.4.8-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg>`;
-const preventaMsg = (p) => `Hola ${STORE.name}, quiero apartar en PREVENTA ${withArt(p)} Nº ${pad(p.no)} ${p.model} (${p.brand}), ${money(p.price)} c/u (mayoreo ${p.wholesale ? money(p.wholesale.price) + " desde " + p.wholesale.min + " pzas" : ""}).\nPiezas: \nTalla: \n¿Cómo hago el pago anticipado para apartar la mía?`;
+const preventaMsg = (p) => `Hola ${STORE.name}, quiero apartar en PREVENTA ${withArt(p)} Nº ${pad(p.no)} ${p.model} (${p.brand}), ${money(p.price)} c/u${p.wholesale ? ` (${p.wholesale.promo ? "promoción" : "mayoreo"} ${money(p.wholesale.price)} desde ${p.wholesale.min} pzas)` : ""}.\nPiezas: \nTalla: \n¿Cómo hago el pago anticipado para apartar la mía?`;
 function priceHtml(p){
   if (p.price == null) return `<span class="price ask">Precio por<br>WhatsApp</span>`;
   if (p.cat === "Gorras") return `<span class="pblock"><span class="price">${money(p.price)}</span><span class="wh">Mayoreo desde ${money(CAP_TIERS[CAP_TIERS.length - 1].price)}</span></span>`;
-  if (p.wholesale) return `<span class="pblock"><span class="price">${money(p.price)}</span><span class="wh">Mayoreo ${money(p.wholesale.price)} desde ${p.wholesale.min} pzas</span></span>`;
+  if (p.wholesale) return `<span class="pblock"><span class="price">${money(p.price)}</span><span class="wh">${p.wholesale.promo ? "Promo" : "Mayoreo"} ${money(p.wholesale.price)} desde ${p.wholesale.min} pzas</span></span>`;
   return `<span class="price">${money(p.price)}</span>`;
 }
 function tierTable(caps){
@@ -782,7 +819,7 @@ function renderGrid(){
       <button class="pic" type="button" data-open="${p.no}" aria-label="Ver ${p.model} en grande"${p.video ? ` data-cycle data-vstart="${p.vstart || 0}"` : ""}>
         <img src="${img(p)}" alt="${Noun(p)} ${p.model}" loading="lazy" style="${imgStyle}">
         ${p.video ? `<video class="card-vid" src="${p.video}" muted playsinline preload="none" aria-hidden="true" tabindex="-1"></video>` : ""}
-        <span class="tag-no">Nº ${pad(p.no)}</span>${p.preventa ? `<span class="tag-pre">Preventa</span>` : ""}
+        <span class="tag-no">Nº ${pad(p.no)}</span>${p.preventa ? `<span class="tag-pre">Preventa</span>` : ""}${p.promo ? `<span class="tag-promo${p.preventa ? " low" : ""}">Promo 3+ ${money(PROMO.promoPrice).replace(" MXN","")}</span>` : ""}
         ${p.video ? `<span class="tag-vid"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg>Ver video</span>` : ""}
       </button>
       <div class="body">
@@ -858,7 +895,7 @@ function openModal(no){
   $("#mDesc").textContent = p.desc;
   $("#mPrice").innerHTML = p.price == null ? `<span class="price ask">Precio por WhatsApp</span>`
     : p.cat === "Gorras" ? `${money(p.price)} <span class="sz">c/u menudeo</span>${tierTable(capUnits())}`
-    : p.wholesale ? `${money(p.price)} <span class="sz">c/u menudeo</span><div class="wh" style="font-family:var(--body);font-size:14px;margin-top:6px">Mayoreo: ${money(p.wholesale.price)} c/u a partir de ${p.wholesale.min} piezas.${p.wholesale.note ? " " + p.wholesale.note : ""}</div>` : money(p.price);
+    : p.wholesale ? `${money(p.price)} <span class="sz">c/u menudeo</span><div class="wh" style="font-family:var(--body);font-size:14px;margin-top:6px">${p.wholesale.promo ? "Promoción ✅" : "Mayoreo:"} ${money(p.wholesale.price)} c/u a partir de ${p.wholesale.min} piezas.${p.wholesale.note ? " " + p.wholesale.note : ""}</div>` : money(p.price);
   $("#mQty").textContent = mQty; modalWholesale();
   const u = waUrl(`Hola ${STORE.name}, me interesa ${withArt(p)} Nº ${pad(p.no)} ${p.model} (${p.brand})${p.preventa ? " en preventa" : ""}. ¿Está disponible?`);
   const pre = !!p.preventa;
@@ -893,7 +930,8 @@ $("#mClose").addEventListener("click", closeModal);
 function modalWholesale(){
   const p = current; if (!p || !p.wholesale || p.preventa) return;
   const on = mQty + groupUnits(p.wholesale.group) >= p.wholesale.min;
-  $("#mPrice").innerHTML = `${money(on ? p.wholesale.price : p.price)} <span class="sz">c/u ${on ? "mayoreo" : "menudeo"}</span><div class="wh" style="font-family:var(--body);font-size:14px;margin-top:6px">${on ? `¡Precio de mayoreo! Llevas ${mQty + groupUnits(p.wholesale.group)} piezas.` : `Mayoreo: ${money(p.wholesale.price)} c/u a partir de ${p.wholesale.min} piezas. Te faltan ${p.wholesale.min - mQty - groupUnits(p.wholesale.group)}.`}${p.wholesale.note ? " " + p.wholesale.note : ""}</div>`;
+  const lbl = p.wholesale.promo ? "promo" : "mayoreo";
+  $("#mPrice").innerHTML = `${money(on ? p.wholesale.price : p.price)} <span class="sz">c/u ${on ? lbl : (p.wholesale.promo ? "1 pieza" : "menudeo")}</span><div class="wh" style="font-family:var(--body);font-size:14px;margin-top:6px">${on ? `¡Precio de ${lbl}! Llevas ${mQty + groupUnits(p.wholesale.group)} piezas.` : `${p.wholesale.promo ? "Promoción ✅" : "Mayoreo:"} ${money(p.wholesale.price)} c/u a partir de ${p.wholesale.min} piezas. Te faltan ${p.wholesale.min - mQty - groupUnits(p.wholesale.group)}.`}${p.wholesale.note ? " " + p.wholesale.note : ""}</div>`;
 }
 $("#mMinus").addEventListener("click", () => { mQty = Math.max(1, mQty - 1); $("#mQty").textContent = mQty; modalWholesale(); });
 $("#mPlus").addEventListener("click", () => { mQty = Math.min(500, mQty + 1); $("#mQty").textContent = mQty; modalWholesale(); });
@@ -910,7 +948,7 @@ function addToCart(no, n, size){
   const before = tierFor(capUnits());
   const p0 = byNo(no), wBefore = p0.wholesale ? unitPrice(p0) : null;
   cart[k] = Math.min(500, (cart[k] || 0) + n); saveCart(); renderCart(); renderGrid();
-  if (p0.wholesale && unitPrice(p0) < wBefore) { toast(`¡Ya tienes precio de mayoreo! ${money(p0.wholesale.price)} por ${p0.wholesale.unit || "pieza"}`); return; }
+  if (p0.wholesale && unitPrice(p0) < wBefore) { toast(`¡Ya tienes precio de ${p0.wholesale.promo ? "promoción" : "mayoreo"}! ${money(p0.wholesale.price)} por ${p0.wholesale.unit || "pieza"}`); return; }
   const after = tierFor(capUnits());
   if (after !== before && after.price < before.price) { toast(`¡Ya tienes precio ${after.name.toLowerCase()}! ${money(after.price)} por gorra`); return; }
   toast(`Agregaste Nº ${pad(no)} ${byNo(no).model}${size ? " talla " + size : ""}`);
@@ -933,7 +971,7 @@ function orderText(){
   const name = $("#cName").value.trim(); const note = $("#cNote").value.trim();
   return [`Hola ${STORE.name}, quiero hacer este pedido:`, ...lines, "",
     caps ? `Gorras: ${caps} pzas, precio ${tier.name.toLowerCase()} ${money(tier.price)} c/u` : "",
-    ...[...new Set(items.filter((it) => it.p.wholesale).map((it) => it.p.wholesale.group))].map((g) => { const w = items.find((it) => it.p.wholesale && it.p.wholesale.group === g).p.wholesale; const n = groupUnits(g); return `${g}: ${n} pzas, precio ${n >= w.min ? "mayoreo " + money(w.price) : "menudeo " + money(items.find((it) => it.p.wholesale && it.p.wholesale.group === g).p.price)} c/u${n < w.min ? ` (mayoreo desde ${w.min} pzas)` : ""}`; }),
+    ...[...new Set(items.filter((it) => it.p.wholesale).map((it) => it.p.wholesale.group))].map((g) => { const w = items.find((it) => it.p.wholesale && it.p.wholesale.group === g).p.wholesale; const n = groupUnits(g); const lb = w.promo ? "promo" : "mayoreo"; return `${g}: ${n} pzas, precio ${n >= w.min ? lb + " " + money(w.price) : (w.promo ? "por pieza " : "menudeo ") + money(items.find((it) => it.p.wholesale && it.p.wholesale.group === g).p.price)} c/u${n < w.min ? ` (${lb} desde ${w.min} pzas)` : ""}`; }),
     sum ? `Total: ${money(sum)}${pending ? " + productos con precio por confirmar" : ""}` : "Total: por confirmar",
     name ? `Nombre: ${name}` : "", note ? `Nota: ${note}` : ""].filter((l, i, a) => l !== "" || (i > 0 && a[i-1] !== "")).join("\n").trim();
 }
