@@ -198,6 +198,10 @@ main,footer{position:relative;z-index:1}
 .promo-prices{display:flex;flex-wrap:wrap;gap:8px 18px;font-family:var(--display);font-size:24px;line-height:1.1}
 .promo-prices b{font-family:var(--body);font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-right:6px}
 .promo-sub{color:var(--muted);font-size:13px}
+.card.is-out .pic img,.card.is-out .pic video{filter:grayscale(1);opacity:.55}
+.tag-out{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-8deg);z-index:3;background:var(--ink);color:var(--paper);border:2px solid var(--paper);font-family:var(--display);font-size:26px;letter-spacing:.06em;text-transform:uppercase;padding:6px 16px;border-radius:8px;pointer-events:none}
+.add-out,.add-out:hover{background:transparent;border-color:var(--line);color:var(--muted);cursor:not-allowed}
+.sz-out{color:var(--red);font-weight:700}
 .tag-promo.low{top:46px}
 .tag-promo{position:absolute;right:12px;top:12px;z-index:2;background:var(--red);color:var(--ink);font-weight:800;font-size:12px;padding:6px 9px;border-radius:999px}
 .ship{display:flex;align-items:center;gap:14px;margin-top:22px;padding:14px 18px;background:var(--panel);border:1px solid var(--line);border-radius:14px;max-width:520px}
@@ -260,6 +264,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
   .tag-no{top:8px;left:8px;font-size:13px;padding:5px 7px;border-radius:6px}
   .tag-pre{top:8px;right:8px;font-size:10px;padding:4px 7px}
   .tag-promo{right:8px;top:8px;font-size:10px;padding:4px 7px}
+  .tag-out{font-size:17px;padding:5px 11px}
   .tag-promo.low{top:34px}
   .promo-prices{font-size:20px}
   .tag-vid{left:8px;bottom:8px;font-size:11px;padding:5px 8px;gap:4px}
@@ -609,7 +614,7 @@ const PRODUCTS = [
   {no:32, cat:"Hoodies", brand:"Asaali",     model:"Asaali Negro y Azul",    desc:"Negro con estampado azul de caras y la frase “That's a awful lot of cough syrup”. Con cierre y capucha.", price:1350, sizes:null, video:"vid/asaali-azul.mp4"},
   {no:33, cat:"Hoodies", brand:"By Dineral", model:"Bathe in Pape",          desc:"Camuflaje rosa con signos de dólar, capucha con cierre completo y cara bordada. En la espalda, “Bathe in Pape!” en felpa.", price:1200, sizes:["2XL"]},
   {no:34, cat:"Hoodies", brand:"Axx Mafia",  model:"Time Is Money",          desc:"Mitad negro y mitad estampado de billetes de 100, capucha con cierre completo. En la espalda, “time is money”.", price:1350, sizes:["S","M","L","XL"], video:"vid/axx-mafia-2.mp4"},
-  {no:35, cat:"Hoodies", brand:"Paionazo",   model:"Paionazo Payaso",        desc:"Negro con pedrería en todo el cuerpo, capucha con cierre completo y cara de payaso. En la espalda, payaso con vasos.", price:1350, sizes:["S","XL"], video:"vid/paionazo.mp4"},
+  {no:35, cat:"Hoodies", brand:"Paionazo",   model:"Paionazo Payaso",        desc:"Negro con pedrería en todo el cuerpo, capucha con cierre completo y cara de payaso. En la espalda, payaso con vasos.", price:1350, sizes:["S","XL"], agotado:true, video:"vid/paionazo.mp4"},
   {no:36, cat:"Hoodies", brand:"Sp5der",     model:"Sp5der Negro",           desc:"Negro con letras “spöder” al frente, pedrería fina en todo el cuerpo y capucha. Míralo puesto en el video.", price:1350, sizes:["S","M","L","XL","2XL"], video:"vid/sp5der.mp4", poster:"vid/sp5der-poster.jpg"},
   {no:43, cat:"Hoodies", brand:"By Dineral", model:"Bathe in Pape Negro y Gris", desc:"Mitad negro y mitad camuflaje gris con signos de dólar, capucha con cierre completo y cara bordada. En la espalda, “Bathe in Pape!” en felpa y “BYD” en la capucha.", price:1500, wholesale:{group:"Hoodies preventa By Dineral", min:10, price:1250, note:"Puedes combinar los dos colores.", unit:"hoodie de preventa"}, sizes:null, preventa:true, video:"vid/dineral-negro.mp4"},
   {no:44, cat:"Hoodies", brand:"By Dineral", model:"Bathe in Pape Blanco Camo", desc:"Camuflaje blanco y gris con signos de dólar, capucha con cierre completo y cara bordada. En la espalda, “Bathe in Pape!” con letras de colores en felpa.", price:1500, wholesale:{group:"Hoodies preventa By Dineral", min:10, price:1250, note:"Puedes combinar los dos colores.", unit:"hoodie de preventa"}, sizes:null, preventa:true, video:"vid/dineral-blanco.mp4"},
@@ -810,16 +815,18 @@ function renderGrid(){
     const sizeLine = p.cat === "Hoodies" ? `<div class="sz">${p.sizes ? "Tallas: " + p.sizes.join(" · ") : "Tallas por confirmar"}</div>` : askSize(p) ? `<div class="sz sz-ask">${SHOE_SIZES}</div>` : "";
     const imgStyle = p.cover ? "object-position:50% 50%" : p.cat === "Hoodies" ? "object-fit:contain" : `object-position:50% ${pos(p)}%`;
     const preUrl = p.preventa ? waUrl(preventaMsg(p)) : null;
-    const btn = p.preventa
+    const btn = p.agotado
+      ? `<button class="add add-out" type="button" disabled>Agotado</button>`
+      : p.preventa
       ? `<a class="add add-pre" href="${preUrl || "#contacto"}" target="_blank" rel="noopener" aria-label="Apartar ${p.model} en preventa por WhatsApp">${WA_ICON}Preventa</a>`
       : needsSize
       ? `<button class="add${has ? " in" : ""}" type="button" data-open="${p.no}">${has ? "En carrito ✓" : "Elegir talla"}</button>`
       : `<button class="add${has ? " in" : ""}" type="button" data-add="${p.no}">${has ? "En carrito ✓" : "Agregar"}</button>`;
-    return `<article class="card">
+    return `<article class="card${p.agotado ? " is-out" : ""}">
       <button class="pic" type="button" data-open="${p.no}" aria-label="Ver ${p.model} en grande"${p.video ? ` data-cycle data-vstart="${p.vstart || 0}"` : ""}>
         <img src="${img(p)}" alt="${Noun(p)} ${p.model}" loading="lazy" style="${imgStyle}">
         ${p.video ? `<video class="card-vid" src="${p.video}" muted playsinline preload="none" aria-hidden="true" tabindex="-1"></video>` : ""}
-        <span class="tag-no">Nº ${pad(p.no)}</span>${p.preventa ? `<span class="tag-pre">Preventa</span>` : ""}${p.promo ? `<span class="tag-promo${p.preventa ? " low" : ""}">Promo 3+ ${money(PROMO.promoPrice).replace(" MXN","")}</span>` : ""}
+        <span class="tag-no">Nº ${pad(p.no)}</span>${p.agotado ? `<span class="tag-out">Agotado</span>` : ""}${p.preventa ? `<span class="tag-pre">Preventa</span>` : ""}${p.promo && !p.agotado ? `<span class="tag-promo${p.preventa ? " low" : ""}">Promo 3+ ${money(PROMO.promoPrice).replace(" MXN","")}</span>` : ""}
         ${p.video ? `<span class="tag-vid"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg>Ver video</span>` : ""}
       </button>
       <div class="body">
@@ -899,11 +906,17 @@ function openModal(no){
   $("#mQty").textContent = mQty; modalWholesale();
   const u = waUrl(`Hola ${STORE.name}, me interesa ${withArt(p)} Nº ${pad(p.no)} ${p.model} (${p.brand})${p.preventa ? " en preventa" : ""}. ¿Está disponible?`);
   const pre = !!p.preventa;
-  $("#mAdd").parentElement.hidden = pre;
+  $("#mAdd").parentElement.hidden = pre || !!p.agotado;
   $("#mWa").innerHTML = pre ? `${WA_ICON} Apartar en preventa por WhatsApp` : "Preguntar por WhatsApp";
   if (pre) { $("#mWa").href = waUrl(preventaMsg(p)) || "#contacto"; $("#mWa").toggleAttribute("aria-disabled", !STORE.whatsapp); }
   else $("#mWa").href = u || "#contacto";
   if (pre) $("#mSizes").insertAdjacentHTML("beforeend", `<div class="sz">Aparta la tuya con un pago anticipado. Toca el botón y te pasamos los datos por WhatsApp.</div>`); $("#mWa").toggleAttribute("aria-disabled", !u);
+  if (p.agotado) {
+    $("#mNo").textContent = `Nº ${pad(p.no)} · Agotado`;
+    $("#mSizes").innerHTML = `<div class="sz sz-out">Agotado por ahora. Pregúntanos por WhatsApp si vuelve a llegar.</div>`;
+    $("#mWa").innerHTML = "Avísame cuando vuelva a llegar";
+    $("#mWa").href = waUrl(`Hola ${STORE.name}, me interesa ${withArt(p)} Nº ${pad(p.no)} ${p.model} (${p.brand}), que aparece agotado. ¿Me avisan cuando vuelva a llegar?`) || "#contacto";
+  }
   $("#scrim").classList.add("open"); $("#modal").classList.add("open");
   $("#mClose").focus();
 }
@@ -943,7 +956,9 @@ $("#mAdd").addEventListener("click", () => {
 $("#mWa").addEventListener("click", (e) => { if (!STORE.whatsapp) { e.preventDefault(); closeModal(); location.hash = "contacto"; toast("Falta el número de WhatsApp de la tienda"); } });
 
 /* ===== Carrito ===== */
+try { Object.keys(cart).forEach((k) => { const p = byNo(parseKey(k).no); if (p && p.agotado) delete cart[k]; }); saveCart(); } catch (e) {}
 function addToCart(no, n, size){
+  if (byNo(no) && byNo(no).agotado) { toast("Este producto está agotado"); return; }
   const k = keyOf(no, size);
   const before = tierFor(capUnits());
   const p0 = byNo(no), wBefore = p0.wholesale ? unitPrice(p0) : null;
