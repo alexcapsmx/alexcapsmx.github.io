@@ -202,6 +202,7 @@ main,footer{position:relative;z-index:1}
 .tag-out{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-8deg);z-index:3;background:var(--ink);color:var(--paper);border:2px solid var(--paper);font-family:var(--display);font-size:26px;letter-spacing:.06em;text-transform:uppercase;padding:6px 16px;border-radius:8px;pointer-events:none}
 .add-out,.add-out:hover{background:transparent;border-color:var(--line);color:var(--muted);cursor:not-allowed}
 .sz-out{color:var(--red);font-weight:700}
+.sz.sz-one,.card .sz.sz-one,.modal .sz.sz-one{color:var(--red);font-weight:700;font-style:normal}
 .tag-promo.low{top:46px}
 .tag-promo{position:absolute;right:12px;top:12px;z-index:2;background:var(--red);color:var(--ink);font-weight:800;font-size:12px;padding:6px 9px;border-radius:999px}
 .ship{display:flex;align-items:center;gap:14px;margin-top:22px;padding:14px 18px;background:var(--panel);border:1px solid var(--line);border-radius:14px;max-width:520px}
@@ -512,6 +513,10 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
       <button type="button" data-media="video" aria-pressed="true">Video puesto</button>
       <button type="button" data-media="foto" aria-pressed="false">Foto</button>
     </div>
+    <div class="media-toggle" id="mSide" role="group" aria-label="Ver frente o atrás" hidden>
+      <button type="button" data-side="f" aria-pressed="true">Frente</button>
+      <button type="button" data-side="b" aria-pressed="false">Atrás</button>
+    </div>
   </div>
   <div class="info">
     <div class="eyebrow" id="mNo"></div>
@@ -628,6 +633,29 @@ const PRODUCTS = [
   {no:45, cat:"Pants", brand:"Asaali", model:"Pants Asaali Rojo", desc:"Solo pants, precio por pieza. Rojo con “Asaali” bordado en blanco, estampado de caras “Asaali Jean Company Los Angeles” en las piernas, cordón y ajuste en el tobillo.", price:700, y:0.45},
   // Joyería.
   {no:46, cat:"Joyería", brand:"Joyería", model:"Pulso tipo Rolex", desc:"Pulso dorado de eslabones estilo Rolex con broche desplegable. Viene en su empaque.", price:200, wholesale:{group:"Pulsos tipo Rolex", min:10, price:150, unit:"pulso"}, y:0.62},
+  // Pieza única (solo 1 disponible). Playeras Bape: $795 c/u, $695 desde 3 piezas combinando modelos.
+  {no:47, cat:"Playeras", brand:"Bape", model:"BAPE x Inter Miami Camo Tee Rosa", desc:"Camuflaje rosa BAPE con “MIAMI *A BATHING APE”, cabeza de mono y escudo del Inter Miami al frente.", price:795, wholesale:{group:"Playeras Bape", min:3, price:695, unit:"playera", note:"Puedes combinar modelos."}, unica:true, y:0.64},
+  {no:48, cat:"Playeras", brand:"Bape", model:"Baby Milo on Big Ape Head Tee Azul", desc:"Azul cielo con Baby Milo acostado sobre la cabeza de mono en camuflaje azul.", price:795, wholesale:{group:"Playeras Bape", min:3, price:695, unit:"playera", note:"Puedes combinar modelos."}, unica:true, y:0.70},
+  {no:49, cat:"Playeras", brand:"Bape", model:"Big Ape Head Camo Tee Negra", desc:"Negra con cabeza de mono grande en camuflaje gris claro y “BY BATHING APE” abajo.", price:795, wholesale:{group:"Playeras Bape", min:3, price:695, unit:"playera", note:"Puedes combinar modelos."}, unica:true, y:0.68},
+  {no:50, cat:"Playeras", brand:"Bape", model:"Big Ape Head Estampado Gris Tee Negra", desc:"Negra con cabezas de mono gigantes en gris desgastado por todo el frente y las mangas, y “*A BATHING APE” al centro.", price:795, wholesale:{group:"Playeras Bape", min:3, price:695, unit:"playera", note:"Puedes combinar modelos."}, unica:true, y:0.68},
+  {no:51, cat:"Playeras", brand:"Bape", model:"Baby Milo on Big Ape Head Tee Beige", desc:"Beige con Baby Milo acostado sobre la cabeza de mono en camuflaje verde.", price:795, wholesale:{group:"Playeras Bape", min:3, price:695, unit:"playera", note:"Puedes combinar modelos."}, unica:true, y:0.66},
+  // Hoodies Bape: $1,360 c/u.
+  {no:52, cat:"Hoodies", brand:"Bape", model:"Baby Milo Shark Full Zip Hoodie Negra", desc:"Negra con cierre completo; capucha mitad camuflaje verde con la cara de tiburón y Baby Milo. Logo de Milo en la manga.", price:1360, sizes:null, unica:true, y:0.55},
+  {no:53, cat:"Hoodies", brand:"Bape", model:"Baby Milo Lisa Full Zip Hoodie Camo Azul", desc:"Camuflaje azul y verde menta con cierre completo y la cara de Lisa (Baby Milo con flor) en la capucha.", price:1360, sizes:null, unica:true, y:0.56},
+  {no:54, cat:"Hoodies", brand:"Bape", model:"Shark Full Zip Hoodie Negra 1st Camo", desc:"Negra con cierre completo; capucha de tiburón con mitad 1st Camo verde y franja de tigre naranja.", price:1360, sizes:null, unica:true, y:0.57},
+  {no:55, cat:"Hoodies", brand:"Bape", model:"Shark Full Zip Hoodie Negra Manga Camo", desc:"Negra con cierre completo; capucha de tiburón mitad camuflaje verde, una manga en camuflaje con parches de colores.", price:1360, sizes:null, unica:true, y:0.57},
+  {no:56, cat:"Hoodies", brand:"Bape", model:"BAPE x adidas Shark Full Zip Hoodie Camo Verde", desc:"Camuflaje verde con las 3 franjas blancas de adidas en las mangas, capucha de tiburón y logos de ambas marcas.", price:1360, sizes:null, unica:true, y:0.54},
+  // Shorts (precio por pieza; confirmar Bape/Hellstar $850 y Asaali $800).
+  {no:57, cat:"Shorts", brand:"Hellstar", model:"Hellstar Path To Paradise Shorts Negro", desc:"Negro deslavado con estrellas blancas por todo el short, logo “Hellstar · Path to Paradise” y cara con flamas.", price:850, unica:true, y:0.55},
+  {no:58, cat:"Shorts", brand:"Bape", model:"BAPE x Inter Miami Camo Shorts Rosa", desc:"Camuflaje rosa con “MIAMI *A BATHING APE”, “BAPE 93” y escudo del Inter Miami.", price:850, unica:true, y:0.67},
+  {no:59, cat:"Shorts", brand:"Bape", model:"Space Camo Shark Shorts Negro", desc:"Camuflaje negro y gris con manchas de colores tipo galaxia y la boca de tiburón al frente.", price:850, unica:true, y:0.68},
+  {no:60, cat:"Shorts", brand:"Asaali", model:"Shorts Asaali Negro", desc:"Negro con “Asaali” bordado en blanco y caras estampadas en gris “Asaali Jean Company Los Angeles”.", price:800, unica:true, y:0.66},
+  {no:61, cat:"Shorts", brand:"Bape", model:"Color Camo Shark Shorts Azul y Morado", desc:"Mitad camuflaje azul marino y mitad camuflaje morado con la boca de tiburón al frente.", price:850, unica:true, y:0.70},
+  {no:62, cat:"Shorts", brand:"Bape", model:"Color Camo Shark Shorts Rojo", desc:"Camuflaje rojo con la boca de tiburón al frente y pretina roja.", price:850, unica:true, y:0.67},
+  {no:63, cat:"Shorts", brand:"Hellstar", model:"Hellstar Warm Up Shorts Azul", desc:"Azul rey deslavado con franjas curvas blancas, logo “HELLSTAR” con estrella y cordón.", price:850, unica:true, y:0.63},
+  {no:64, cat:"Shorts", brand:"Bape", model:"Shark Shorts 1st Camo y Negro", desc:"Mitad 1st Camo verde y mitad negro con la boca de tiburón al frente.", price:850, unica:true, y:0.65},
+  // Pants Asaali: $1,000 c/u.
+  {no:65, cat:"Pants", brand:"Asaali", model:"Pants Asaali Cough Syrup Negro", desc:"Negro con caras estampadas en gris y “That's a awful lot of cough syrup” al frente. Atrás, la frase en letras grandes a lo largo de las piernas.", price:1000, back:"img/g65b.jpg", unica:true, y:0.57},
   // Jerseys de fútbol.
   {no:42, cat:"Jerseys Fútbol", brand:"Adidas", model:"Jersey Argentina", desc:"Local blanca y celeste con 3 estrellas, escudo AFA dorado, parche de Campeones del Mundo 2022 y el 10.", price:300, y:0.52}
 ];
@@ -640,6 +668,14 @@ const CAP_TIERS = [
   { min: 25, price: 250, name: "Mayoreo 25+" }
 ];
 PRODUCTS.forEach((p) => { if (p.cat === "Gorras") p.price = CAP_TIERS[0].price; });
+/* Pieza única: al enviar el mensaje por WhatsApp se marca como agotada (en el navegador de quien la pidió). */
+const SOLD_KEY = "alexcaps-vendidos";
+let SOLD = []; try { SOLD = JSON.parse(localStorage.getItem(SOLD_KEY) || "[]") || []; } catch (e) { SOLD = []; }
+PRODUCTS.forEach((p) => { if (p.unica && SOLD.includes(p.no)) p.agotado = true; });
+function markSold(nos){
+  nos.forEach((no) => { const p = PRODUCTS.find((x) => x.no === no); if (p && p.unica) { p.agotado = true; if (!SOLD.includes(no)) SOLD.push(no); } });
+  try { localStorage.setItem(SOLD_KEY, JSON.stringify(SOLD)); } catch (e) {}
+}
 /* ===== Promoción temporal de hoodies (2 semanas). Al terminar, todo vuelve solo a sus precios normales. ===== */
 const PROMO = {
   start: new Date("2026-11-07T00:00:00-06:00"),
@@ -655,8 +691,8 @@ if (promoActive()) PRODUCTS.forEach((p) => {
 });
 const tierFor = (caps) => CAP_TIERS.filter((t) => caps >= t.min).pop() || CAP_TIERS[0];
 const nextTier = (caps) => CAP_TIERS.find((t) => t.min > caps) || null;
-const BRAND_ORDER = ["Barbas Hats","Rude Awakenings","Gallo Fino x CT","Rico o Muerto","Baez","Asaali","Axx Mafia","By Dineral","Paionazo","Sp5der","New Balance","Nike","Jordan","Adidas","Joyería","Otras marcas"];
-const CATS = ["Todo","Alex Caps","Gorras","Hoodies","Tenis","Jerseys Fútbol","Joyería"];
+const BRAND_ORDER = ["Barbas Hats","Rude Awakenings","Gallo Fino x CT","Rico o Muerto","Baez","Asaali","Axx Mafia","By Dineral","Paionazo","Sp5der","New Balance","Nike","Jordan","Adidas","Bape","Hellstar","Joyería","Otras marcas"];
+const CATS = ["Todo","Alex Caps","Gorras","Hoodies","Playeras","Shorts","Tenis","Jerseys Fútbol","Joyería"];
 
 /* Sección "Alex Caps": videos de TikTok. Para agregar uno: {video:"vid/tt/nombre.mp4", thumb:"img/tt/nombre.jpg", title:"Texto corto"} */
 const TIKTOKS = [
@@ -683,10 +719,10 @@ const keyOf = (no, size) => `${no}|${size || ""}`;
 const parseKey = (k) => { const [no, size] = String(k).split("|"); return { no: +no, size: size || "" }; };
 const cartKeys = () => Object.keys(cart).sort((a, b) => parseKey(a).no - parseKey(b).no || a.localeCompare(b));
 const inCartNo = (no) => cartKeys().some((k) => parseKey(k).no === no);
-const noun = (p) => p.cat === "Hoodies" ? "hoodie" : p.cat === "Tenis" ? "tenis" : p.cat === "Jerseys Fútbol" ? "jersey" : p.cat === "Pants" ? "pants" : p.cat === "Joyería" ? "pulso" : "gorra";
-const Noun = (p) => ({ hoodie: "Hoodie", tenis: "Tenis", jersey: "Jersey", pants: "Pants", pulso: "Pulso", gorra: "Gorra" })[noun(p)];
-const withArt = (p) => ({ hoodie: "el hoodie", tenis: "los tenis", jersey: "el jersey", pants: "los pants", pulso: "el pulso", gorra: "la gorra" })[noun(p)];
-const askSize = (p) => p.cat === "Tenis" || p.cat === "Jerseys Fútbol" || p.cat === "Pants";
+const noun = (p) => p.cat === "Hoodies" ? "hoodie" : p.cat === "Tenis" ? "tenis" : p.cat === "Jerseys Fútbol" ? "jersey" : p.cat === "Pants" ? "pants" : p.cat === "Joyería" ? "pulso" : p.cat === "Playeras" ? "playera" : p.cat === "Shorts" ? "short" : "gorra";
+const Noun = (p) => ({ hoodie: "Hoodie", tenis: "Tenis", jersey: "Jersey", pants: "Pants", pulso: "Pulso", playera: "Playera", short: "Short", gorra: "Gorra" })[noun(p)];
+const withArt = (p) => ({ hoodie: "el hoodie", tenis: "los tenis", jersey: "el jersey", pants: "los pants", pulso: "el pulso", playera: "la playera", short: "el short", gorra: "la gorra" })[noun(p)];
+const askSize = (p) => ["Tenis","Jerseys Fútbol","Pants","Playeras","Shorts"].includes(p.cat);
 const SHOE_SIZES = "Pregunta por tallas disponibles";
 let cart = {};
 try { cart = JSON.parse(localStorage.getItem("alexcaps-cart") || "{}") || {}; } catch (e) { cart = {}; }
@@ -835,7 +871,7 @@ function renderGrid(){
         <div class="brand">${p.brand}</div>
         <h3>${p.model}</h3>
         <p class="desc">${p.desc}</p>
-        ${colorLine}${sizeLine}
+        ${p.unica && !p.agotado ? `<div class="sz sz-one">Solo 1 pieza disponible</div>` : ""}${colorLine}${sizeLine}
         <div class="foot">${priceHtml(p)}${btn}</div>
       </div>
     </article>`;
@@ -913,9 +949,11 @@ function openModal(no){
   if (pre) { $("#mWa").href = waUrl(preventaMsg(p)) || "#contacto"; $("#mWa").toggleAttribute("aria-disabled", !STORE.whatsapp); }
   else $("#mWa").href = u || "#contacto";
   if (pre) $("#mSizes").insertAdjacentHTML("beforeend", `<div class="sz">Aparta la tuya con un pago anticipado. Toca el botón y te pasamos los datos por WhatsApp.</div>`); $("#mWa").toggleAttribute("aria-disabled", !u);
+  if (p.unica && !p.agotado) $("#mSizes").insertAdjacentHTML("afterbegin", `<div class="sz sz-one">Solo 1 pieza disponible.</div>`);
+  $("#mSide").hidden = !p.back; setSide("f");
   if (p.agotado) {
     $("#mNo").textContent = `Nº ${pad(p.no)} · Agotado`;
-    $("#mSizes").innerHTML = `<div class="sz sz-out">Agotado por ahora. Pregúntanos por WhatsApp si vuelve a llegar.</div>`;
+    $("#mSizes").innerHTML = `<div class="sz sz-out">Agotado hasta nuevo aviso. Pregúntanos por WhatsApp si vuelve a llegar.</div>`;
     $("#mWa").innerHTML = "Avísame cuando vuelva a llegar";
     $("#mWa").href = waUrl(`Hola ${STORE.name}, me interesa: ${msgName(p)}, que aparece agotado. ¿Me avisan cuando vuelva a llegar?`) || "#contacto";
   }
@@ -933,6 +971,12 @@ function showMedia(kind){
     const pr = v.play(); if (pr && pr.catch) pr.catch(() => {});
   } else { v.pause(); }
 }
+function setSide(sd){
+  if (!current) return;
+  $("#mImg").src = sd === "b" && current.back ? current.back : img(current);
+  $("#mSide").querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.side === sd)));
+}
+$("#mSide").addEventListener("click", (e) => { const b = e.target.closest("[data-side]"); if (b) setSide(b.dataset.side); });
 let autoRot = true, rotT = null;
 $("#mMedia").addEventListener("click", (e) => { const b = e.target.closest("[data-media]"); if (!b) return; autoRot = false; clearTimeout(rotT); showMedia(b.dataset.media); });
 $("#mVid").addEventListener("ended", () => {
@@ -949,7 +993,7 @@ function modalWholesale(){
   $("#mPrice").innerHTML = `${money(on ? p.wholesale.price : p.price)} <span class="sz">c/u ${on ? lbl : (p.wholesale.promo ? "1 pieza" : "menudeo")}</span><div class="wh" style="font-family:var(--body);font-size:14px;margin-top:6px">${on ? `¡Precio de ${lbl}! Llevas ${mQty + groupUnits(p.wholesale.group)} piezas.` : `${p.wholesale.promo ? "Promoción ✅" : "Mayoreo:"} ${money(p.wholesale.price)} c/u a partir de ${p.wholesale.min} piezas. Te faltan ${p.wholesale.min - mQty - groupUnits(p.wholesale.group)}.`}${p.wholesale.note ? " " + p.wholesale.note : ""}</div>`;
 }
 $("#mMinus").addEventListener("click", () => { mQty = Math.max(1, mQty - 1); $("#mQty").textContent = mQty; modalWholesale(); });
-$("#mPlus").addEventListener("click", () => { mQty = Math.min(500, mQty + 1); $("#mQty").textContent = mQty; modalWholesale(); });
+$("#mPlus").addEventListener("click", () => { if (current && current.unica) { toast("Solo hay 1 pieza disponible"); return; } mQty = Math.min(500, mQty + 1); $("#mQty").textContent = mQty; modalWholesale(); });
 $("#mSizes").addEventListener("click", (e) => { const b = e.target.closest("[data-size]"); if (!b) return; mSize = b.dataset.size; renderSizes(); });
 $("#mAdd").addEventListener("click", () => {
   if (current.sizes && current.sizes.length > 1 && !mSize) { toast("Elige tu talla"); return; }
@@ -961,6 +1005,11 @@ $("#mWa").addEventListener("click", (e) => { if (!STORE.whatsapp) { e.preventDef
 try { Object.keys(cart).forEach((k) => { const p = byNo(parseKey(k).no); if (p && p.agotado) delete cart[k]; }); saveCart(); } catch (e) {}
 function addToCart(no, n, size){
   if (byNo(no) && byNo(no).agotado) { toast("Este producto está agotado"); return; }
+  if (byNo(no) && byNo(no).unica) {
+    const have = cartKeys().filter((k) => parseKey(k).no === no).reduce((t, k) => t + cart[k], 0);
+    if (have >= 1) { toast("Solo hay 1 pieza disponible y ya está en tu carrito"); return; }
+    n = 1;
+  }
   const k = keyOf(no, size);
   const before = tierFor(capUnits());
   const p0 = byNo(no), wBefore = p0.wholesale ? unitPrice(p0) : null;
@@ -1032,7 +1081,17 @@ $("#lines").addEventListener("click", (e) => {
   const t = e.target.closest("button"); if (!t) return;
   if (t.dataset.rm) setQty(t.dataset.rm, 0);
   if (t.dataset.dec) setQty(t.dataset.dec, cart[t.dataset.dec] - 1);
-  if (t.dataset.inc) setQty(t.dataset.inc, cart[t.dataset.inc] + 1);
+  if (t.dataset.inc) { const pp = byNo(parseKey(t.dataset.inc).no); if (pp && pp.unica) { toast("Solo hay 1 pieza disponible"); return; } setQty(t.dataset.inc, cart[t.dataset.inc] + 1); }
+});
+$("#sendWa").addEventListener("click", () => {
+  if ($("#sendWa").hasAttribute("aria-disabled")) return;
+  const nos = lineItems().filter((it) => it.p.unica).map((it) => it.p.no);
+  if (!nos.length) return;
+  setTimeout(() => { markSold(nos); Object.keys(cart).forEach((k) => { if (nos.includes(parseKey(k).no)) delete cart[k]; }); saveCart(); renderCart(); renderGrid(); }, 400);
+});
+$("#mWa").addEventListener("click", () => {
+  const p = current; if (!p || !p.unica || p.agotado || $("#mWa").hasAttribute("aria-disabled")) return;
+  setTimeout(() => { markSold([p.no]); Object.keys(cart).forEach((k) => { if (parseKey(k).no === p.no) delete cart[k]; }); saveCart(); renderCart(); renderGrid(); }, 400);
 });
 $("#cName").addEventListener("input", updateSend);
 $("#cNote").addEventListener("input", updateSend);
