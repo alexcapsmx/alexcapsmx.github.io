@@ -634,11 +634,11 @@ const PRODUCTS = [
   // Joyería.
   {no:46, cat:"Joyería", brand:"Joyería", model:"Pulso tipo Rolex", desc:"Pulso dorado de eslabones estilo Rolex con broche desplegable. Viene en su empaque.", price:200, wholesale:{group:"Pulsos tipo Rolex", min:10, price:150, unit:"pulso"}, y:0.62},
   // Pieza única (solo 1 disponible). Playeras Bape: $795 c/u.
-  {no:47, cat:"Playeras", brand:"Bape", model:"BAPE x Inter Miami Camo Tee Rosa", desc:"Camuflaje rosa BAPE con “MIAMI *A BATHING APE”, cabeza de mono y escudo del Inter Miami al frente.", price:795, unica:true, y:0.64},
-  {no:48, cat:"Playeras", brand:"Bape", model:"Baby Milo on Big Ape Head Tee Azul", desc:"Azul cielo con Baby Milo acostado sobre la cabeza de mono en camuflaje azul.", price:795, unica:true, y:0.70},
-  {no:49, cat:"Playeras", brand:"Bape", model:"Big Ape Head Camo Tee Negra", desc:"Negra con cabeza de mono grande en camuflaje gris claro y “BY BATHING APE” abajo.", price:795, unica:true, y:0.68},
-  {no:50, cat:"Playeras", brand:"Bape", model:"Big Ape Head Estampado Gris Tee Negra", desc:"Negra con cabezas de mono gigantes en gris desgastado por todo el frente y las mangas, y “*A BATHING APE” al centro.", price:795, unica:true, y:0.68},
-  {no:51, cat:"Playeras", brand:"Bape", model:"Baby Milo on Big Ape Head Tee Beige", desc:"Beige con Baby Milo acostado sobre la cabeza de mono en camuflaje verde.", price:795, unica:true, y:0.66},
+  {no:47, cat:"Playeras", color:"Rosa", brand:"Bape", model:"BAPE x Inter Miami Camo Tee Rosa", desc:"Camuflaje rosa BAPE con “MIAMI *A BATHING APE”, cabeza de mono y escudo del Inter Miami al frente.", price:795, unica:true, y:0.64},
+  {no:48, cat:"Playeras", color:"Azul", brand:"Bape", model:"Baby Milo on Big Ape Head Tee Azul", desc:"Azul cielo con Baby Milo acostado sobre la cabeza de mono en camuflaje azul.", price:795, unica:true, y:0.70},
+  {no:49, cat:"Playeras", color:"Negro", brand:"Bape", model:"Big Ape Head Camo Tee Negra", desc:"Negra con cabeza de mono grande en camuflaje gris claro y “BY BATHING APE” abajo.", price:795, unica:true, y:0.68},
+  {no:50, cat:"Playeras", color:"Negro y gris", brand:"Bape", model:"Big Ape Head Estampado Gris Tee Negra", desc:"Negra con cabezas de mono gigantes en gris desgastado por todo el frente y las mangas, y “*A BATHING APE” al centro.", price:795, unica:true, y:0.68},
+  {no:51, cat:"Playeras", color:"Beige", brand:"Bape", model:"Baby Milo on Big Ape Head Tee Beige", desc:"Beige con Baby Milo acostado sobre la cabeza de mono en camuflaje verde.", price:795, unica:true, y:0.66},
   // Hoodies Bape: $1,360 c/u.
   {no:52, cat:"Hoodies", brand:"Bape", model:"Baby Milo Shark Full Zip Hoodie Negra", desc:"Negra con cierre completo; capucha mitad camuflaje verde con la cara de tiburón y Baby Milo. Logo de Milo en la manga.", price:1360, sizes:null, unica:true, y:0.55},
   {no:53, cat:"Hoodies", brand:"Bape", model:"Baby Milo Lisa Full Zip Hoodie Camo Azul", desc:"Camuflaje azul y verde menta con cierre completo y la cara de Lisa (Baby Milo con flor) en la capucha.", price:1360, sizes:null, unica:true, y:0.56},
@@ -786,7 +786,12 @@ function visible(){
 function groupUnits(g){ return cartKeys().reduce((t, k) => { const p = byNo(parseKey(k).no); return t + (p && p.wholesale && p.wholesale.group === g ? cart[k] : 0); }, 0); }
 const unitPrice = (p) => p.cat === "Gorras" ? tierFor(capUnits()).price : p.wholesale && groupUnits(p.wholesale.group) >= p.wholesale.min ? p.wholesale.price : p.price;
 const WA_ICON = `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.3-.4.8-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg>`;
-const msgName = (p) => p.brand === "By Dineral" && p.cat === "Hoodies" && p.color ? `Bathe in Pape color ${p.color.toLowerCase()}` : p.cat === "Shorts" && p.color ? `${p.model} color ${p.color.toLowerCase()}` : p.model;
+const cleanMsg = (t) => t.replace(/\s*camuflaje\s*/gi, " ").replace(/\s+/g, " ").trim();
+const msgName = (p) => cleanMsg(
+  p.brand === "By Dineral" && p.cat === "Hoodies" && p.color ? `Bathe in Pape color ${p.color.toLowerCase()}`
+  : p.cat === "Playeras" && p.color ? `Playera ${p.brand} color ${p.color.toLowerCase()}`
+  : p.cat === "Shorts" && p.color ? `${p.model} color ${p.color.toLowerCase()}`
+  : p.model);
 const preventaMsg = (p) => `Hola ${STORE.name}, quiero apartar en PREVENTA: ${msgName(p)}, ${money(p.price)} c/u${p.wholesale ? ` (${p.wholesale.promo ? "promoción" : "mayoreo"} ${money(p.wholesale.price)} desde ${p.wholesale.min} pzas)` : ""}.\nPiezas: \nTalla: \n¿Cómo hago el pago anticipado para apartar la mía?`;
 function priceHtml(p){
   if (p.price == null) return `<span class="price ask">Precio por<br>WhatsApp</span>`;
