@@ -978,15 +978,13 @@ function lineItems(){
 }
 function sizeText(it){ return it.p.cat === "Hoodies" ? (it.size ? `talla ${it.size}` : "talla por confirmar") : askSize(it.p) ? "talla por confirmar" : ""; }
 function orderText(){
+  // Mensaje corto: producto, piezas y total.
   const items = lineItems();
-  const lines = items.map((it) => `• ${it.q} x Nº ${pad(it.p.no)} ${it.p.model} (${it.p.brand})${it.p.preventa ? " [PREVENTA]" : ""}${sizeText(it) ? ", " + sizeText(it) : ""}${it.u != null ? ` — ${money(it.u)} c/u = ${money(it.u * it.q)}` : " — precio por confirmar"}`);
+  const lines = items.map((it) => `• ${it.p.model} x${it.q}${it.size ? ` (talla ${it.size})` : ""}`);
   const sum = items.reduce((t, it) => t + (it.u || 0) * it.q, 0);
   const pending = items.some((it) => it.u == null);
-  const caps = capUnits(); const tier = tierFor(caps);
   const name = $("#cName").value.trim(); const note = $("#cNote").value.trim();
   return [`Hola ${STORE.name}, quiero hacer este pedido:`, ...lines, "",
-    caps ? `Gorras: ${caps} pzas, precio ${tier.name.toLowerCase()} ${money(tier.price)} c/u` : "",
-    ...[...new Set(items.filter((it) => it.p.wholesale).map((it) => it.p.wholesale.group))].map((g) => { const w = items.find((it) => it.p.wholesale && it.p.wholesale.group === g).p.wholesale; const n = groupUnits(g); const lb = w.promo ? "promo" : "mayoreo"; return `${g}: ${n} pzas, precio ${n >= w.min ? lb + " " + money(w.price) : (w.promo ? "por pieza " : "menudeo ") + money(items.find((it) => it.p.wholesale && it.p.wholesale.group === g).p.price)} c/u${n < w.min ? ` (${lb} desde ${w.min} pzas)` : ""}`; }),
     sum ? `Total: ${money(sum)}${pending ? " + productos con precio por confirmar" : ""}` : "Total: por confirmar",
     name ? `Nombre: ${name}` : "", note ? `Nota: ${note}` : ""].filter((l, i, a) => l !== "" || (i > 0 && a[i-1] !== "")).join("\n").trim();
 }
