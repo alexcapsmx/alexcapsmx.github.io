@@ -609,15 +609,15 @@ const PRODUCTS = [
   {no:28, brand:"Rude Awakenings",   model:"The Last Supper",      desc:"Total black, “LA” gótico, bordado de la Última Cena y picos.", price:null, y:.56},
   {no:29, brand:"Otras marcas",      model:"Cruces Plateadas",     desc:"Negro, estampado blanco con cruces metálicas plateadas y doradas.", price:null, y:.55},
   // Hoodies. sizes: tallas disponibles; null = tallas por confirmar.
-  {no:30, cat:"Hoodies", brand:"Asaali",     model:"Asaali Azul y Amarillo", desc:"Azul rey con estampado amarillo de caras y la frase “That's a awful lot of cough syrup”. Con cierre y capucha.", price:1350, sizes:null, video:"vid/asaali-amarillo.mp4"},
-  {no:31, cat:"Hoodies", brand:"Asaali",     model:"Asaali Negro y Gris",    desc:"Negro con estampado gris de caras y la frase “That's a awful lot of cough syrup”. Con cierre y capucha.", price:1350, sizes:null, video:"vid/asaali.mp4", vstart:4.5},
-  {no:32, cat:"Hoodies", brand:"Asaali",     model:"Asaali Negro y Azul",    desc:"Negro con estampado azul de caras y la frase “That's a awful lot of cough syrup”. Con cierre y capucha.", price:1350, sizes:null, video:"vid/asaali-azul.mp4"},
-  {no:33, cat:"Hoodies", brand:"By Dineral", model:"Bathe in Pape",          desc:"Camuflaje rosa con signos de dólar, capucha con cierre completo y cara bordada. En la espalda, “Bathe in Pape!” en felpa.", price:1200, sizes:["2XL"]},
-  {no:34, cat:"Hoodies", brand:"Axx Mafia",  model:"Time Is Money",          desc:"Mitad negro y mitad estampado de billetes de 100, capucha con cierre completo. En la espalda, “time is money”.", price:1350, sizes:["S","M","L","XL"], video:"vid/axx-mafia-2.mp4"},
-  {no:35, cat:"Hoodies", brand:"Paionazo",   model:"Paionazo Payaso",        desc:"Negro con pedrería en todo el cuerpo, capucha con cierre completo y cara de payaso. En la espalda, payaso con vasos.", price:1350, sizes:["S","XL"], agotado:true, video:"vid/paionazo.mp4"},
-  {no:36, cat:"Hoodies", brand:"Sp5der",     model:"Sp5der Negro",           desc:"Negro con letras “spöder” al frente, pedrería fina en todo el cuerpo y capucha. Míralo puesto en el video.", price:1350, sizes:["S","M","L","XL","2XL"], video:"vid/sp5der.mp4", poster:"vid/sp5der-poster.jpg"},
-  {no:43, cat:"Hoodies", brand:"By Dineral", model:"Bathe in Pape Negro y Gris", desc:"Mitad negro y mitad camuflaje gris con signos de dólar, capucha con cierre completo y cara bordada. En la espalda, “Bathe in Pape!” en felpa y “BYD” en la capucha.", price:1500, wholesale:{group:"Hoodies preventa By Dineral", min:10, price:1250, note:"Puedes combinar los dos colores.", unit:"hoodie de preventa"}, sizes:null, preventa:true, video:"vid/dineral-negro.mp4"},
-  {no:44, cat:"Hoodies", brand:"By Dineral", model:"Bathe in Pape Blanco Camo", desc:"Camuflaje blanco y gris con signos de dólar, capucha con cierre completo y cara bordada. En la espalda, “Bathe in Pape!” con letras de colores en felpa.", price:1500, wholesale:{group:"Hoodies preventa By Dineral", min:10, price:1250, note:"Puedes combinar los dos colores.", unit:"hoodie de preventa"}, sizes:null, preventa:true, video:"vid/dineral-blanco.mp4"},
+  {no:30, cat:"Hoodies", color:"Azul y amarillo", brand:"Asaali",     model:"Asaali Azul y Amarillo", desc:"Azul rey con estampado amarillo de caras y la frase “That's a awful lot of cough syrup”. Con cierre y capucha.", price:1350, sizes:null, video:"vid/asaali-amarillo.mp4"},
+  {no:31, cat:"Hoodies", color:"Negro y gris", brand:"Asaali",     model:"Asaali Negro y Gris",    desc:"Negro con estampado gris de caras y la frase “That's a awful lot of cough syrup”. Con cierre y capucha.", price:1350, sizes:null, video:"vid/asaali.mp4", vstart:4.5},
+  {no:32, cat:"Hoodies", color:"Negro y azul", brand:"Asaali",     model:"Asaali Negro y Azul",    desc:"Negro con estampado azul de caras y la frase “That's a awful lot of cough syrup”. Con cierre y capucha.", price:1350, sizes:null, video:"vid/asaali-azul.mp4"},
+  {no:33, cat:"Hoodies", color:"Rosa camuflaje", brand:"By Dineral", model:"Bathe in Pape",          desc:"Camuflaje rosa con signos de dólar, capucha con cierre completo y cara bordada. En la espalda, “Bathe in Pape!” en felpa.", price:1200, sizes:["2XL"]},
+  {no:34, cat:"Hoodies", color:"Negro con billetes", brand:"Axx Mafia",  model:"Time Is Money",          desc:"Mitad negro y mitad estampado de billetes de 100, capucha con cierre completo. En la espalda, “time is money”.", price:1350, sizes:["S","M","L","XL"], video:"vid/axx-mafia-2.mp4"},
+  {no:35, cat:"Hoodies", color:"Negro", brand:"Paionazo",   model:"Paionazo Payaso",        desc:"Negro con pedrería en todo el cuerpo, capucha con cierre completo y cara de payaso. En la espalda, payaso con vasos.", price:1350, sizes:["S","XL"], agotado:true, video:"vid/paionazo.mp4"},
+  {no:36, cat:"Hoodies", color:"Negro", brand:"Sp5der",     model:"Sp5der Negro",           desc:"Negro con letras “spöder” al frente, pedrería fina en todo el cuerpo y capucha. Míralo puesto en el video.", price:1350, sizes:["S","M","L","XL","2XL"], video:"vid/sp5der.mp4", poster:"vid/sp5der-poster.jpg"},
+  {no:43, cat:"Hoodies", color:"Negro y gris camuflaje", brand:"By Dineral", model:"Bathe in Pape Negro y Gris", desc:"Mitad negro y mitad camuflaje gris con signos de dólar, capucha con cierre completo y cara bordada. En la espalda, “Bathe in Pape!” en felpa y “BYD” en la capucha.", price:1500, wholesale:{group:"Hoodies preventa By Dineral", min:10, price:1250, note:"Puedes combinar los dos colores.", unit:"hoodie de preventa"}, sizes:null, preventa:true, video:"vid/dineral-negro.mp4"},
+  {no:44, cat:"Hoodies", color:"Blanco camuflaje", brand:"By Dineral", model:"Bathe in Pape Blanco Camo", desc:"Camuflaje blanco y gris con signos de dólar, capucha con cierre completo y cara bordada. En la espalda, “Bathe in Pape!” con letras de colores en felpa.", price:1500, wholesale:{group:"Hoodies preventa By Dineral", min:10, price:1250, note:"Puedes combinar los dos colores.", unit:"hoodie de preventa"}, sizes:null, preventa:true, video:"vid/dineral-blanco.mp4"},
   // Tenis. Precio único; tallas a preguntar por WhatsApp.
   {no:37, cat:"Tenis", brand:"New Balance", model:"9060 Gris Castlerock", desc:"Gamuza y malla en tonos gris, suela gruesa con cápsulas ABZORB y clip translúcido en el talón.", price:1000, y:0.62},
   {no:38, cat:"Tenis", brand:"Nike",        model:"Air Max 270 Triple Black", desc:"Todo negro, tejido transpirable y la cámara de aire grande en el talón.", price:1000, y:0.62},
@@ -750,7 +750,7 @@ function visible(){
 function groupUnits(g){ return cartKeys().reduce((t, k) => { const p = byNo(parseKey(k).no); return t + (p && p.wholesale && p.wholesale.group === g ? cart[k] : 0); }, 0); }
 const unitPrice = (p) => p.cat === "Gorras" ? tierFor(capUnits()).price : p.wholesale && groupUnits(p.wholesale.group) >= p.wholesale.min ? p.wholesale.price : p.price;
 const WA_ICON = `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.3-.4.8-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg>`;
-const preventaMsg = (p) => `Hola ${STORE.name}, quiero apartar en PREVENTA ${withArt(p)} Nº ${pad(p.no)} ${p.model} (${p.brand}), ${money(p.price)} c/u${p.wholesale ? ` (${p.wholesale.promo ? "promoción" : "mayoreo"} ${money(p.wholesale.price)} desde ${p.wholesale.min} pzas)` : ""}.\nPiezas: \nTalla: \n¿Cómo hago el pago anticipado para apartar la mía?`;
+const preventaMsg = (p) => `Hola ${STORE.name}, quiero apartar en PREVENTA ${withArt(p)} ${p.model} (${p.brand})${p.color ? `, color ${p.color.toLowerCase()}` : ""}, ${money(p.price)} c/u${p.wholesale ? ` (${p.wholesale.promo ? "promoción" : "mayoreo"} ${money(p.wholesale.price)} desde ${p.wholesale.min} pzas)` : ""}.\nPiezas: \nTalla: \n¿Cómo hago el pago anticipado para apartar la mía?`;
 function priceHtml(p){
   if (p.price == null) return `<span class="price ask">Precio por<br>WhatsApp</span>`;
   if (p.cat === "Gorras") return `<span class="pblock"><span class="price">${money(p.price)}</span><span class="wh">Mayoreo desde ${money(CAP_TIERS[CAP_TIERS.length - 1].price)}</span></span>`;
@@ -812,6 +812,7 @@ function renderGrid(){
   $("#grid").innerHTML = list.map((p) => {
     const has = inCartNo(p.no);
     const needsSize = p.sizes && p.sizes.length > 1;
+    const colorLine = p.color ? `<div class="sz">Color: ${p.color}</div>` : "";
     const sizeLine = p.cat === "Hoodies" ? `<div class="sz">${p.sizes ? "Tallas: " + p.sizes.join(" · ") : "Tallas por confirmar"}</div>` : askSize(p) ? `<div class="sz sz-ask">${SHOE_SIZES}</div>` : "";
     const imgStyle = p.cover ? "object-position:50% 50%" : p.cat === "Hoodies" ? "object-fit:contain" : `object-position:50% ${pos(p)}%`;
     const preUrl = p.preventa ? waUrl(preventaMsg(p)) : null;
@@ -833,7 +834,7 @@ function renderGrid(){
         <div class="brand">${p.brand}</div>
         <h3>${p.model}</h3>
         <p class="desc">${p.desc}</p>
-        ${sizeLine}
+        ${colorLine}${sizeLine}
         <div class="foot">${priceHtml(p)}${btn}</div>
       </div>
     </article>`;
@@ -897,14 +898,14 @@ function openModal(no){
     $("#mMedia").hidden = false; showMedia("video");
   } else { v.pause(); v.removeAttribute("src"); v.load(); $("#mMedia").hidden = true; showMedia("foto"); }
   $("#mNo").textContent = `Nº ${pad(p.no)}${p.preventa ? " · Preventa" : ""}`;
-  $("#mBrand").textContent = p.brand;
+  $("#mBrand").textContent = p.brand + (p.color ? " · Color: " + p.color : "");
   $("#mTitle").textContent = p.model;
   $("#mDesc").textContent = p.desc;
   $("#mPrice").innerHTML = p.price == null ? `<span class="price ask">Precio por WhatsApp</span>`
     : p.cat === "Gorras" ? `${money(p.price)} <span class="sz">c/u menudeo</span>${tierTable(capUnits())}`
     : p.wholesale ? `${money(p.price)} <span class="sz">c/u menudeo</span><div class="wh" style="font-family:var(--body);font-size:14px;margin-top:6px">${p.wholesale.promo ? "Promoción ✅" : "Mayoreo:"} ${money(p.wholesale.price)} c/u a partir de ${p.wholesale.min} piezas.${p.wholesale.note ? " " + p.wholesale.note : ""}</div>` : money(p.price);
   $("#mQty").textContent = mQty; modalWholesale();
-  const u = waUrl(`Hola ${STORE.name}, me interesa ${withArt(p)} Nº ${pad(p.no)} ${p.model} (${p.brand})${p.preventa ? " en preventa" : ""}. ¿Está disponible?`);
+  const u = waUrl(`Hola ${STORE.name}, me interesa ${withArt(p)} Nº ${pad(p.no)} ${p.model} (${p.brand})${p.color ? `, color ${p.color.toLowerCase()}` : ""}${p.preventa ? " en preventa" : ""}. ¿Está disponible?`);
   const pre = !!p.preventa;
   $("#mAdd").parentElement.hidden = pre || !!p.agotado;
   $("#mWa").innerHTML = pre ? `${WA_ICON} Apartar en preventa por WhatsApp` : "Preguntar por WhatsApp";
@@ -980,7 +981,7 @@ function sizeText(it){ return it.p.cat === "Hoodies" ? (it.size ? `talla ${it.si
 function orderText(){
   // Mensaje corto: producto, piezas y total.
   const items = lineItems();
-  const lines = items.map((it) => `• ${it.p.model} x${it.q}${it.size ? ` (talla ${it.size})` : ""}`);
+  const lines = items.map((it) => `• ${it.p.cat === "Hoodies" ? "Hoodie " : ""}${it.p.model}${it.p.color && !it.p.model.toLowerCase().includes(it.p.color.toLowerCase()) ? ` — color ${it.p.color.toLowerCase()}` : ""} x${it.q}${it.size ? ` (talla ${it.size})` : ""}`);
   const sum = items.reduce((t, it) => t + (it.u || 0) * it.q, 0);
   const pending = items.some((it) => it.u == null);
   const name = $("#cName").value.trim(); const note = $("#cNote").value.trim();
