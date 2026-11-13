@@ -616,6 +616,7 @@ const STORE = {
 
 // price: número en MXN, o null mientras no tenga precio. y: posición vertical de la gorra en la foto (0 a 1).
 /* Conjuntos: $689 por pieza, $589 c/u desde 5 y $550 c/u desde 10 (se pueden combinar). */
+const DEP_WH = { group:"Gorras deportivas", min:5, price:215, unit:"gorra deportiva", note:"Puedes combinar modelos." };
 const CONJ_WH = { group:"Conjuntos", min:5, price:589, tiers:[{min:5,price:589},{min:10,price:550}], unit:"conjunto", note:"Puedes combinar modelos." };
 const PRODUCTS = [
   {no:1,  brand:"Rico o Muerto",     model:"Rico o Muerto Verde",  desc:"Negro, bordado verde 3D, pedrería y rana metálica.", price:null, y:.58},
@@ -682,7 +683,7 @@ const PRODUCTS = [
   {no:55, cat:"Hoodies", talla:"M", brand:"Bape", model:"Shark Full Zip Hoodie Negra Manga Camo", desc:"Negra con cierre completo; capucha de tiburón mitad camuflaje verde, una manga en camuflaje con parches de colores.", price:1360, sizes:null, unica:true, y:0.57},
   {no:56, cat:"Hoodies", agotado:true, talla:"M", brand:"Bape", model:"BAPE x adidas Shark Full Zip Hoodie Camo Verde", desc:"Camuflaje verde con las 3 franjas blancas de adidas en las mangas, capucha de tiburón y logos de ambas marcas.", price:1360, sizes:null, unica:true, y:0.54},
   // Shorts (precio por pieza; confirmar Bape/Hellstar $850 y Asaali $800).
-  {no:57, cat:"Shorts", talla:"M", brand:"Hellstar", model:"Short Hellstar", color:"Negro con estrellas", desc:"Negro deslavado con estrellas blancas por todo el short, logo “Hellstar · Path to Paradise” y cara con flamas.", price:850, unica:true, y:0.55},
+  {no:57, cat:"Shorts", agotado:true, talla:"M", brand:"Hellstar", model:"Short Hellstar", color:"Negro con estrellas", desc:"Negro deslavado con estrellas blancas por todo el short, logo “Hellstar · Path to Paradise” y cara con flamas.", price:850, unica:true, y:0.55},
   {no:58, cat:"Shorts", talla:"M", brand:"Bape", model:"Short Bape", color:"Rosa camuflaje", desc:"Camuflaje rosa con “MIAMI *A BATHING APE”, “BAPE 93” y escudo del Inter Miami.", price:850, unica:true, y:0.67},
   {no:59, cat:"Shorts", talla:"M", brand:"Bape", model:"Short Bape", color:"Negro camuflaje galaxia", desc:"Camuflaje negro y gris con manchas de colores tipo galaxia y la boca de tiburón al frente.", price:850, unica:true, y:0.68},
   {no:60, cat:"Shorts", talla:"M", brand:"Asaali", model:"Short Asaali", color:"Negro", desc:"Negro con “Asaali” bordado en blanco y caras estampadas en gris “Asaali Jean Company Los Angeles”.", price:800, unica:true, y:0.66},
@@ -710,6 +711,12 @@ const PRODUCTS = [
   {no:82, cat:"Conjuntos", color:"Negro", brand:"Jordan", model:"Conjunto Jordan Jumpman", desc:"Sudadera sin cierre y pants negros con vivos blancos y el Jumpman.", price:689, wholesale:CONJ_WH, y:0.22},
   {no:83, cat:"Conjuntos", color:"Negro con flores", brand:"True Religion", model:"Conjunto True Religion", desc:"Sudadera con cierre y pants negros con el logo arqueado “TRUE RELIGION”, la herradura grande y flores de colores; costuras Big T blancas.", price:689, wholesale:CONJ_WH, y:0.22},
   {no:84, cat:"Conjuntos", color:"Negro con estrellas", brand:"Hellstar", model:"Conjunto Path To Paradise", desc:"Sudadera sin cierre y pants negros con estrellas blancas, logo “Hellstar · Path to Paradise” y cara con flamas.", price:689, wholesale:CONJ_WH, y:0.22},
+  // Gorras deportivas: $315 por pieza, $215 c/u desde 5 (combinables).
+  {no:85, cat:"Gorras Deportivas", color:"Azul", brand:"Boss", model:"Gorra Deportiva Boss", desc:"Gorra deportiva azul rey con “BOSS” en blanco, malla perforada a los lados y visera curva.", price:315, wholesale:DEP_WH, cover:true},
+  {no:86, cat:"Gorras Deportivas", color:"Blanco", brand:"On", model:"Gorra Deportiva On", desc:"Gorra deportiva blanca con el logo de On en negro y malla perforada a los lados.", price:315, wholesale:DEP_WH, cover:true},
+  {no:87, cat:"Gorras Deportivas", color:"Negro", brand:"Boss", model:"Gorra Deportiva Boss", desc:"Gorra deportiva negra con “BOSS” al frente y malla perforada a los lados.", price:315, wholesale:DEP_WH, cover:true},
+  {no:88, cat:"Gorras Deportivas", color:"Negro", brand:"Alo", model:"Gorra Deportiva Alo", desc:"Gorra deportiva negra con el logo “alo” en blanco y malla perforada a los lados.", price:315, wholesale:DEP_WH, cover:true},
+  {no:89, cat:"Gorras Deportivas", color:"Negro", brand:"Essentials", model:"Gorra Deportiva Essentials", desc:"Gorra deportiva negra con “ESSENTIALS” en relieve negro y malla perforada a los lados.", price:315, wholesale:DEP_WH, cover:true},
   // Jerseys de fútbol.
   {no:42, cat:"Jerseys Fútbol", brand:"Adidas", model:"Jersey Argentina", desc:"Local blanca y celeste con 3 estrellas, escudo AFA dorado, parche de Campeones del Mundo 2022 y el 10.", price:300, y:0.52}
 ];
@@ -745,8 +752,8 @@ if (promoActive()) PRODUCTS.forEach((p) => {
 });
 const tierFor = (caps) => CAP_TIERS.filter((t) => caps >= t.min).pop() || CAP_TIERS[0];
 const nextTier = (caps) => CAP_TIERS.find((t) => t.min > caps) || null;
-const BRAND_ORDER = ["Barbas Hats","Rude Awakenings","Gallo Fino x CT","Rico o Muerto","Baez","Asaali","Axx Mafia","By Dineral","Paionazo","Sp5der","New Balance","Nike","Jordan","Adidas","Bape","Hellstar","True Religion","Louis Vuitton","Dior","Boss","Burberry","Essentials","Joyería","Otras marcas"];
-const CATS = ["Todo","Alex Caps","Gorras","Hoodies","Conjuntos","Playeras","Shorts","Tenis","Jerseys Fútbol","Joyería"];
+const BRAND_ORDER = ["Barbas Hats","Rude Awakenings","Gallo Fino x CT","Rico o Muerto","Baez","Asaali","Axx Mafia","By Dineral","Paionazo","Sp5der","New Balance","Nike","Jordan","Adidas","Bape","Hellstar","True Religion","Louis Vuitton","Dior","Boss","Burberry","Essentials","On","Alo","Joyería","Otras marcas"];
+const CATS = ["Todo","Alex Caps","Gorras","Gorras Deportivas","Hoodies","Conjuntos","Playeras","Shorts","Tenis","Jerseys Fútbol","Joyería"];
 
 /* Sección "Alex Caps": videos de TikTok. Para agregar uno: {video:"vid/tt/nombre.mp4", thumb:"img/tt/nombre.jpg", title:"Texto corto"} */
 const TIKTOKS = [
@@ -773,7 +780,7 @@ const keyOf = (no, size) => `${no}|${size || ""}`;
 const parseKey = (k) => { const [no, size] = String(k).split("|"); return { no: +no, size: size || "" }; };
 const cartKeys = () => Object.keys(cart).sort((a, b) => parseKey(a).no - parseKey(b).no || a.localeCompare(b));
 const inCartNo = (no) => cartKeys().some((k) => parseKey(k).no === no);
-const noun = (p) => p.cat === "Hoodies" ? "hoodie" : p.cat === "Tenis" ? "tenis" : p.cat === "Jerseys Fútbol" ? "jersey" : p.cat === "Pants" ? "pants" : p.cat === "Joyería" ? "pulso" : p.cat === "Playeras" ? "playera" : p.cat === "Conjuntos" ? "conjunto" : p.cat === "Shorts" ? "short" : "gorra";
+const noun = (p) => p.cat === "Hoodies" ? "hoodie" : p.cat === "Tenis" ? "tenis" : p.cat === "Jerseys Fútbol" ? "jersey" : p.cat === "Pants" ? "pants" : p.cat === "Joyería" ? "pulso" : p.cat === "Playeras" ? "playera" : p.cat === "Conjuntos" ? "conjunto" : p.cat === "Gorras Deportivas" ? "gorra" : p.cat === "Shorts" ? "short" : "gorra";
 const Noun = (p) => ({ hoodie: "Hoodie", tenis: "Tenis", jersey: "Jersey", pants: "Pants", pulso: "Pulso", playera: "Playera", conjunto: "Conjunto", short: "Short", gorra: "Gorra" })[noun(p)];
 const withArt = (p) => ({ hoodie: "el hoodie", tenis: "los tenis", jersey: "el jersey", pants: "los pants", pulso: "el pulso", playera: "la playera", conjunto: "el conjunto", short: "el short", gorra: "la gorra" })[noun(p)];
 const askSize = (p) => ["Tenis","Jerseys Fútbol","Pants","Playeras","Shorts","Conjuntos"].includes(p.cat);
@@ -862,6 +869,7 @@ const cleanMsg = (t) => t.replace(/\s*camuflaje\s*/gi, " ").replace(/\s+/g, " ")
 const msgName = (p) => cleanMsg(
   p.brand === "By Dineral" && p.cat === "Hoodies" && p.color ? `Bathe in Pape color ${p.color.toLowerCase()}`
   : p.cat === "Playeras" && p.color ? `Playera ${p.brand} color ${p.color.toLowerCase()}`
+  : p.cat === "Gorras Deportivas" && p.color ? `Gorra deportiva ${p.brand} color ${p.color.toLowerCase()}`
   : p.cat === "Conjuntos" && p.color ? `Conjunto ${p.brand} color ${p.color.toLowerCase()}`
   : p.cat === "Shorts" && p.color ? `${p.model} color ${p.color.toLowerCase()}`
   : p.model);
