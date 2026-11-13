@@ -191,6 +191,26 @@ main,footer{position:relative;z-index:1}
 .bar{height:8px;background:var(--panel-2);border-radius:999px;overflow:hidden}
 .bar span{display:block;height:100%;background:var(--red);border-radius:999px}
 .social-top{padding:8px 0 0}
+.paquetes{padding:34px 0 10px}
+.paq-head{text-align:center;max-width:640px;margin:0 auto 18px}
+.paq-kicker{display:inline-block;background:var(--red);color:var(--ink);font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase;padding:6px 12px;border-radius:999px;animation:paqPulse 2.4s ease-in-out infinite}
+@keyframes paqPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,74,61,.55)}50%{box-shadow:0 0 0 10px rgba(255,74,61,0)}}
+@media (prefers-reduced-motion:reduce){.paq-kicker{animation:none}}
+.paq-head h2{font-family:var(--display);font-weight:400;font-size:clamp(34px,6vw,56px);line-height:1;margin:12px 0 8px;text-transform:uppercase}
+.paq-head p{color:var(--muted);margin:0}
+.paq-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.paq{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+.paq img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;cursor:zoom-in}
+.paq .pb{padding:14px;display:flex;flex-direction:column;gap:6px;flex:1}
+.paq h3{font-family:var(--display);font-weight:400;font-size:24px;line-height:1.05;margin:0;text-transform:uppercase}
+.paq .pp{font-family:var(--display);font-size:34px;color:var(--red);line-height:1}
+.paq .ps{color:var(--muted);font-size:14px;margin:0}
+.paq .btn-paq{margin-top:auto;display:flex;align-items:center;justify-content:center;gap:8px;min-height:46px;border-radius:12px;background:#25D366;color:#06210F;font-weight:800;text-decoration:none}
+.paq .btn-paq:hover{background:#3BE27A}
+.nav-hot{color:var(--red)!important;font-weight:800}
+.paq-zoom{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;padding:16px}
+.paq-zoom img{max-width:100%;max-height:100%;border-radius:12px}
+@media (max-width:860px){.paq-grid{grid-template-columns:1fr;max-width:460px;margin:0 auto}}
 .promo{display:flex;flex-direction:column;gap:6px;margin-top:22px;padding:16px 18px;background:linear-gradient(135deg,rgba(255,74,61,.22),rgba(255,74,61,.06));border:1px solid var(--red);border-radius:14px;max-width:520px;color:var(--paper);text-decoration:none}
 .promo:hover{border-color:var(--paper)}
 .promo-tag{align-self:flex-start;background:var(--red);color:var(--ink);font-weight:800;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;border-radius:999px}
@@ -337,6 +357,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
     <a class="logo" href="#inicio" aria-label="Alex Caps, inicio"><img src="img/logo.png" alt="Alex Caps" width="440" height="197"></a>
     <nav class="nav" aria-label="Secciones">
       <a href="#tienda">Tienda</a>
+      <a href="#paquetes" class="nav-hot">Paquetes 🔥</a>
       <a href="#mayoreo">Mayoreo</a>
       <a href="#como-comprar">Cómo comprar</a>
       <a href="#contacto">Contacto</a>
@@ -373,6 +394,17 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
           <div><strong>1</strong><span>Mensaje para pedir</span></div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section class="paquetes" id="paquetes">
+    <div class="wrap">
+      <div class="paq-head">
+        <span class="paq-kicker">🔥 Paquetes emprendedores</span>
+        <h2>Arma tu paquete y empieza a vender</h2>
+        <p>Elige los modelos que quieras, a tu gusto. Ideal para reventa o para estrenar con todo.</p>
+      </div>
+      <div class="paq-grid" id="paqGrid"></div>
     </div>
   </section>
 
@@ -646,9 +678,9 @@ const PRODUCTS = [
   // Hoodies Bape: $1,360 c/u.
   {no:52, cat:"Hoodies", talla:"M", brand:"Bape", model:"Baby Milo Shark Full Zip Hoodie Negra", desc:"Negra con cierre completo; capucha mitad camuflaje verde con la cara de tiburón y Baby Milo. Logo de Milo en la manga.", price:1360, sizes:null, unica:true, y:0.55},
   {no:53, cat:"Hoodies", talla:"M", brand:"Bape", model:"Baby Milo Lisa Full Zip Hoodie Camo Azul", desc:"Camuflaje azul y verde menta con cierre completo y la cara de Lisa (Baby Milo con flor) en la capucha.", price:1360, sizes:null, unica:true, y:0.56},
-  {no:54, cat:"Hoodies", talla:"M", brand:"Bape", model:"Shark Full Zip Hoodie Negra 1st Camo", desc:"Negra con cierre completo; capucha de tiburón con mitad 1st Camo verde y franja de tigre naranja.", price:1360, sizes:null, unica:true, y:0.57},
+  {no:54, cat:"Hoodies", agotado:true, talla:"M", brand:"Bape", model:"Shark Full Zip Hoodie Negra 1st Camo", desc:"Negra con cierre completo; capucha de tiburón con mitad 1st Camo verde y franja de tigre naranja.", price:1360, sizes:null, unica:true, y:0.57},
   {no:55, cat:"Hoodies", talla:"M", brand:"Bape", model:"Shark Full Zip Hoodie Negra Manga Camo", desc:"Negra con cierre completo; capucha de tiburón mitad camuflaje verde, una manga en camuflaje con parches de colores.", price:1360, sizes:null, unica:true, y:0.57},
-  {no:56, cat:"Hoodies", talla:"M", brand:"Bape", model:"BAPE x adidas Shark Full Zip Hoodie Camo Verde", desc:"Camuflaje verde con las 3 franjas blancas de adidas en las mangas, capucha de tiburón y logos de ambas marcas.", price:1360, sizes:null, unica:true, y:0.54},
+  {no:56, cat:"Hoodies", agotado:true, talla:"M", brand:"Bape", model:"BAPE x adidas Shark Full Zip Hoodie Camo Verde", desc:"Camuflaje verde con las 3 franjas blancas de adidas en las mangas, capucha de tiburón y logos de ambas marcas.", price:1360, sizes:null, unica:true, y:0.54},
   // Shorts (precio por pieza; confirmar Bape/Hellstar $850 y Asaali $800).
   {no:57, cat:"Shorts", talla:"M", brand:"Hellstar", model:"Short Hellstar", color:"Negro con estrellas", desc:"Negro deslavado con estrellas blancas por todo el short, logo “Hellstar · Path to Paradise” y cara con flamas.", price:850, unica:true, y:0.55},
   {no:58, cat:"Shorts", talla:"M", brand:"Bape", model:"Short Bape", color:"Rosa camuflaje", desc:"Camuflaje rosa con “MIAMI *A BATHING APE”, “BAPE 93” y escudo del Inter Miami.", price:850, unica:true, y:0.67},
@@ -701,7 +733,7 @@ function markSold(nos){
 /* ===== Promoción temporal de hoodies (2 semanas). Al terminar, todo vuelve solo a sus precios normales. ===== */
 const PROMO = {
   start: new Date("2026-11-07T00:00:00-06:00"),
-  end:   new Date("2026-11-21T23:59:59-06:00"),
+  end:   new Date("2026-11-19T23:59:59-06:00"),
   brands: ["Asaali","By Dineral","Paionazo","Axx Mafia","Sp5der"],
   price: 1350, min: 3, promoPrice: 1150,
 };
@@ -754,10 +786,26 @@ const saveCart = () => { try { localStorage.setItem("alexcaps-cart", JSON.string
 /* ===== Cinta y conteos ===== */
 const brandsPresent = BRAND_ORDER.filter((b) => PRODUCTS.some((p) => p.brand === b));
 $("#statModels").textContent = PRODUCTS.length;
+/* ===== Paquetes emprendedores ===== */
+const PAQUETES = [
+  { img:"img/paq-p1.jpg", title:"1 gorra + 1 hoodie", price:1500, sub:"La gorra y la hoodie que tú elijas.", msg:"el paquete de 1 gorra y 1 hoodie por $1,500" },
+  { img:"img/paq-p2.jpg", title:"2 hoodies a tu gusto", price:2500, sub:"True Religion, Bape, Asaali, By Dineral, Axx Mafia y más.", msg:"el paquete de 2 hoodies a mi gusto por $2,500" },
+  { img:"img/paq-p3.jpg", title:"5 gorras + 5 conjuntos", price:4450, sub:"El paquete para emprender: elige los 10 a tu gusto.", msg:"el paquete emprendedor de 5 gorras y 5 conjuntos por $4,450" },
+];
+queueMicrotask(() => { $("#paqGrid").innerHTML = PAQUETES.map((q, i) => `<article class="paq">
+  <img src="${q.img}" alt="Promoción ${q.title} por ${money(q.price)}" loading="lazy" data-zoom="${q.img}">
+  <div class="pb"><h3>${q.title}</h3><div class="pp">${money(q.price).replace(" MXN","")}</div><p class="ps">${q.sub}</p>
+  <a class="btn-paq" href="${waUrl(`Hola ${STORE.name}, quiero ${q.msg}. ¿Qué modelos tienen disponibles?`) || "#contacto"}" target="_blank" rel="noopener">${WA_ICON} Lo quiero</a></div>
+</article>`).join(""); });
+$("#paqGrid").addEventListener("click", (e) => {
+  const im = e.target.closest("[data-zoom]"); if (!im) return;
+  const z = document.createElement("div"); z.className = "paq-zoom"; z.innerHTML = `<img src="${im.dataset.zoom}" alt="">`;
+  z.addEventListener("click", () => z.remove()); document.body.appendChild(z);
+});
 if (promoActive()) {
   $("#promoBox").hidden = false;
-  const days = Math.max(1, Math.ceil((PROMO.end.getTime() - Date.now()) / 86400000));
-  $("#promoEnd").textContent = `Válida hasta el sábado 21 de noviembre · ${days === 1 ? "último día" : "quedan " + days + " días"}. Puedes combinar modelos y marcas.`;
+  const days = Math.floor((PROMO.end.getTime() - Date.now()) / 86400000);
+  $("#promoEnd").textContent = `Válida hasta el jueves 19 de noviembre · ${days <= 0 ? "último día" : days === 1 ? "queda 1 día" : "quedan " + days + " días"}. Puedes combinar modelos y marcas.`;
   $("#promoBox").addEventListener("click", () => { state.cat = "Hoodies"; state.brand = "Todas"; renderChips(); renderGrid(); });
 }
 
