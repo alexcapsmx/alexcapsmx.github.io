@@ -583,6 +583,8 @@ const STORE = {
 };
 
 // price: número en MXN, o null mientras no tenga precio. y: posición vertical de la gorra en la foto (0 a 1).
+/* Conjuntos: $689 por pieza, $589 c/u desde 5 y $550 c/u desde 10 (se pueden combinar). */
+const CONJ_WH = { group:"Conjuntos", min:5, price:589, tiers:[{min:5,price:589},{min:10,price:550}], unit:"conjunto", note:"Puedes combinar modelos." };
 const PRODUCTS = [
   {no:1,  brand:"Rico o Muerto",     model:"Rico o Muerto Verde",  desc:"Negro, bordado verde 3D, pedrería y rana metálica.", price:null, y:.58},
   {no:2,  brand:"Rude Awakenings",   model:"NY Chrome",            desc:"Negro, letras cromadas con espinas, visera deslavada.", price:null, y:.59},
@@ -659,23 +661,23 @@ const PRODUCTS = [
   // Pants Asaali: $1,000 c/u.
   {no:65, cat:"Pants", talla:"M", brand:"Asaali", model:"Pants Asaali Cough Syrup Negro", desc:"Negro con caras estampadas en gris y “That's a awful lot of cough syrup” al frente. Atrás, la frase en letras grandes a lo largo de las piernas.", price:1000, back:"img/g65b.jpg", unica:true, y:0.57},
   // Conjuntos (sudadera + pants). Precio por WhatsApp hasta tener precio.
-  {no:68, cat:"Conjuntos", color:"Negro con amarillo y azul", brand:"True Religion", model:"Conjunto True Religion", desc:"Sudadera con cierre y pants negros con el logo del Buda con guitarra y “True Religion Brand Jeans” en amarillo y azul.", price:null, y:0.22},
-  {no:69, cat:"Conjuntos", color:"Negro y coral", brand:"True Religion", model:"Conjunto True Religion", desc:"Sudadera con cierre dorado y pants negros con “TRUE” en cristales, adornos de pedrería coral y costuras Big T doradas.", price:null, y:0.22},
-  {no:70, cat:"Conjuntos", color:"Negro con herraduras blancas", brand:"True Religion", model:"Conjunto True Religion", desc:"Sudadera con cierre y pants negros con herraduras “True Religion” en blanco, costuras Big T y el Buda dorado “World Tour” en la espalda.", price:null, y:0.22},
-  {no:71, cat:"Conjuntos", color:"Negro y azul", brand:"True Religion", model:"Conjunto True Religion", desc:"Sudadera con cierre y pants negros con el Buda al pecho, “TR” y “TRUE RELIGION” en letras varsity azules a lo largo de las mangas.", price:null, y:0.22},
-  {no:72, cat:"Conjuntos", color:"Azul", brand:"True Religion", model:"Conjunto True Religion", desc:"Sudadera con cierre y pants azul rey con la cara del Buda en contorno, herraduras y “True Religion World Tour” en la manga y la pierna.", price:null, y:0.22},
-  {no:73, cat:"Conjuntos", color:"Verde", brand:"True Religion", model:"Conjunto True Religion", desc:"Sudadera con cierre y pants verde botella con el Buda al pecho, “TR” y “TRUE RELIGION” en letras varsity a lo largo de las mangas.", price:null, y:0.22},
-  {no:74, cat:"Conjuntos", color:"Negro", brand:"Nike", model:"Conjunto Club Fleece Cargo", desc:"Sudadera con cierre y pants cargo negros con el logo Nike en blanco.", price:null, y:0.22},
-  {no:75, cat:"Conjuntos", color:"Negro", brand:"Boss", model:"Conjunto Boss", desc:"Sudadera con cierre y pants negros con el logo BOSS en blanco.", price:null, y:0.22},
-  {no:76, cat:"Conjuntos", color:"Negro", brand:"Louis Vuitton", model:"Conjunto LV Monograma", desc:"Sudadera con cierre y pants negros con el logo LV y flores en las mangas; capucha forrada con monograma blanco y negro.", price:null, y:0.22},
-  {no:77, cat:"Conjuntos", color:"Negro", brand:"Dior", model:"Conjunto Dior Oblique", desc:"Sudadera con cierre y pants negros con “DIOR” bordado; capucha forrada con estampado Oblique blanco y negro.", price:null, y:0.22},
-  {no:78, cat:"Conjuntos", color:"Azul marino con franjas azules", brand:"Louis Vuitton", model:"Conjunto LV Franjas", desc:"Sudadera con cierre y pants azul marino con franjas laterales de monograma azul y el logo LV.", price:null, y:0.22},
-  {no:79, cat:"Conjuntos", color:"Negro", brand:"True Religion", model:"Conjunto True Religion", desc:"Sudadera con cierre y pants negros con la herradura blanca al pecho y costuras Big T blancas.", price:null, y:0.22},
-  {no:80, cat:"Conjuntos", color:"Negro", brand:"Essentials", model:"Conjunto Fear of God Essentials", desc:"Sudadera sin cierre y pants negros con “ESSENTIALS FEAR OF GOD” en negro.", price:null, y:0.22},
-  {no:81, cat:"Conjuntos", color:"Café", brand:"Burberry", model:"Conjunto Burberry", desc:"Sudadera sin cierre y pants café con “BURBERRY” en blanco al pecho y a lo largo de la pierna.", price:null, y:0.22},
-  {no:82, cat:"Conjuntos", color:"Negro", brand:"Jordan", model:"Conjunto Jordan Jumpman", desc:"Sudadera sin cierre y pants negros con vivos blancos y el Jumpman.", price:null, y:0.22},
-  {no:83, cat:"Conjuntos", color:"Negro con flores", brand:"True Religion", model:"Conjunto True Religion", desc:"Sudadera con cierre y pants negros con el logo arqueado “TRUE RELIGION”, la herradura grande y flores de colores; costuras Big T blancas.", price:null, y:0.22},
-  {no:84, cat:"Conjuntos", color:"Negro con estrellas", brand:"Hellstar", model:"Conjunto Path To Paradise", desc:"Sudadera sin cierre y pants negros con estrellas blancas, logo “Hellstar · Path to Paradise” y cara con flamas.", price:null, y:0.22},
+  {no:68, cat:"Conjuntos", color:"Negro con amarillo y azul", brand:"True Religion", model:"Conjunto True Religion", desc:"Sudadera con cierre y pants negros con el logo del Buda con guitarra y “True Religion Brand Jeans” en amarillo y azul.", price:689, wholesale:CONJ_WH, y:0.22},
+  {no:69, cat:"Conjuntos", color:"Negro y coral", brand:"True Religion", model:"Conjunto True Religion", desc:"Sudadera con cierre dorado y pants negros con “TRUE” en cristales, adornos de pedrería coral y costuras Big T doradas.", price:689, wholesale:CONJ_WH, y:0.22},
+  {no:70, cat:"Conjuntos", color:"Negro con herraduras blancas", brand:"True Religion", model:"Conjunto True Religion", desc:"Sudadera con cierre y pants negros con herraduras “True Religion” en blanco, costuras Big T y el Buda dorado “World Tour” en la espalda.", price:689, wholesale:CONJ_WH, y:0.22},
+  {no:71, cat:"Conjuntos", color:"Negro y azul", brand:"True Religion", model:"Conjunto True Religion", desc:"Sudadera con cierre y pants negros con el Buda al pecho, “TR” y “TRUE RELIGION” en letras varsity azules a lo largo de las mangas.", price:689, wholesale:CONJ_WH, y:0.22},
+  {no:72, cat:"Conjuntos", color:"Azul", brand:"True Religion", model:"Conjunto True Religion", desc:"Sudadera con cierre y pants azul rey con la cara del Buda en contorno, herraduras y “True Religion World Tour” en la manga y la pierna.", price:689, wholesale:CONJ_WH, y:0.22},
+  {no:73, cat:"Conjuntos", color:"Verde", brand:"True Religion", model:"Conjunto True Religion", desc:"Sudadera con cierre y pants verde botella con el Buda al pecho, “TR” y “TRUE RELIGION” en letras varsity a lo largo de las mangas.", price:689, wholesale:CONJ_WH, y:0.22},
+  {no:74, cat:"Conjuntos", color:"Negro", brand:"Nike", model:"Conjunto Club Fleece Cargo", desc:"Sudadera con cierre y pants cargo negros con el logo Nike en blanco.", price:689, wholesale:CONJ_WH, y:0.22},
+  {no:75, cat:"Conjuntos", color:"Negro", brand:"Boss", model:"Conjunto Boss", desc:"Sudadera con cierre y pants negros con el logo BOSS en blanco.", price:689, wholesale:CONJ_WH, y:0.22},
+  {no:76, cat:"Conjuntos", color:"Negro", brand:"Louis Vuitton", model:"Conjunto LV Monograma", desc:"Sudadera con cierre y pants negros con el logo LV y flores en las mangas; capucha forrada con monograma blanco y negro.", price:689, wholesale:CONJ_WH, y:0.22},
+  {no:77, cat:"Conjuntos", color:"Negro", brand:"Dior", model:"Conjunto Dior Oblique", desc:"Sudadera con cierre y pants negros con “DIOR” bordado; capucha forrada con estampado Oblique blanco y negro.", price:689, wholesale:CONJ_WH, y:0.22},
+  {no:78, cat:"Conjuntos", color:"Azul marino con franjas azules", brand:"Louis Vuitton", model:"Conjunto LV Franjas", desc:"Sudadera con cierre y pants azul marino con franjas laterales de monograma azul y el logo LV.", price:689, wholesale:CONJ_WH, y:0.22},
+  {no:79, cat:"Conjuntos", color:"Negro", brand:"True Religion", model:"Conjunto True Religion", desc:"Sudadera con cierre y pants negros con la herradura blanca al pecho y costuras Big T blancas.", price:689, wholesale:CONJ_WH, y:0.22},
+  {no:80, cat:"Conjuntos", color:"Negro", brand:"Essentials", model:"Conjunto Fear of God Essentials", desc:"Sudadera sin cierre y pants negros con “ESSENTIALS FEAR OF GOD” en negro.", price:689, wholesale:CONJ_WH, y:0.22},
+  {no:81, cat:"Conjuntos", color:"Café", brand:"Burberry", model:"Conjunto Burberry", desc:"Sudadera sin cierre y pants café con “BURBERRY” en blanco al pecho y a lo largo de la pierna.", price:689, wholesale:CONJ_WH, y:0.22},
+  {no:82, cat:"Conjuntos", color:"Negro", brand:"Jordan", model:"Conjunto Jordan Jumpman", desc:"Sudadera sin cierre y pants negros con vivos blancos y el Jumpman.", price:689, wholesale:CONJ_WH, y:0.22},
+  {no:83, cat:"Conjuntos", color:"Negro con flores", brand:"True Religion", model:"Conjunto True Religion", desc:"Sudadera con cierre y pants negros con el logo arqueado “TRUE RELIGION”, la herradura grande y flores de colores; costuras Big T blancas.", price:689, wholesale:CONJ_WH, y:0.22},
+  {no:84, cat:"Conjuntos", color:"Negro con estrellas", brand:"Hellstar", model:"Conjunto Path To Paradise", desc:"Sudadera sin cierre y pants negros con estrellas blancas, logo “Hellstar · Path to Paradise” y cara con flamas.", price:689, wholesale:CONJ_WH, y:0.22},
   // Jerseys de fútbol.
   {no:42, cat:"Jerseys Fútbol", brand:"Adidas", model:"Jersey Argentina", desc:"Local blanca y celeste con 3 estrellas, escudo AFA dorado, parche de Campeones del Mundo 2022 y el 10.", price:300, y:0.52}
 ];
@@ -804,7 +806,9 @@ function visible(){
 
 /* ===== Tienda ===== */
 function groupUnits(g){ return cartKeys().reduce((t, k) => { const p = byNo(parseKey(k).no); return t + (p && p.wholesale && p.wholesale.group === g ? cart[k] : 0); }, 0); }
-const unitPrice = (p) => p.cat === "Gorras" ? tierFor(capUnits()).price : p.wholesale && groupUnits(p.wholesale.group) >= p.wholesale.min ? p.wholesale.price : p.price;
+const whPrice = (p, n) => { const w = p.wholesale; if (!w || n < w.min) return p.price; if (!w.tiers) return w.price; return w.tiers.filter((t) => n >= t.min).sort((a, b) => b.min - a.min)[0].price; };
+const whText = (w) => w.tiers ? w.tiers.map((t) => `${money(t.price).replace(" MXN","")} desde ${t.min}`).join(" · ") : `${money(w.price)} desde ${w.min} pzas`;
+const unitPrice = (p) => p.cat === "Gorras" ? tierFor(capUnits()).price : p.wholesale ? whPrice(p, groupUnits(p.wholesale.group)) : p.price;
 const WA_ICON = `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.3-.4.8-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg>`;
 const cleanMsg = (t) => t.replace(/\s*camuflaje\s*/gi, " ").replace(/\s+/g, " ").trim();
 const msgName = (p) => cleanMsg(
@@ -817,7 +821,7 @@ const preventaMsg = (p) => `Hola ${STORE.name}, quiero apartar en PREVENTA: ${ms
 function priceHtml(p){
   if (p.price == null) return `<span class="price ask">Precio por<br>WhatsApp</span>`;
   if (p.cat === "Gorras") return `<span class="pblock"><span class="price">${money(p.price)}</span><span class="wh">Mayoreo desde ${money(CAP_TIERS[CAP_TIERS.length - 1].price)}</span></span>`;
-  if (p.wholesale) return `<span class="pblock"><span class="price">${money(p.price)}</span><span class="wh">${p.wholesale.promo ? "Promo" : "Mayoreo"} ${money(p.wholesale.price)} desde ${p.wholesale.min} pzas</span></span>`;
+  if (p.wholesale) return `<span class="pblock"><span class="price">${money(p.price)}</span><span class="wh">${p.wholesale.promo ? "Promo" : "Mayoreo"} ${whText(p.wholesale)}${p.wholesale.tiers ? " pzas" : ""}</span></span>`;
   return `<span class="price">${money(p.price)}</span>`;
 }
 function tierTable(caps){
@@ -967,7 +971,7 @@ function openModal(no){
   $("#mDesc").textContent = p.desc;
   $("#mPrice").innerHTML = p.price == null ? `<span class="price ask">Precio por WhatsApp</span>`
     : p.cat === "Gorras" ? `${money(p.price)} <span class="sz">c/u menudeo</span>${tierTable(capUnits())}`
-    : p.wholesale ? `${money(p.price)} <span class="sz">c/u menudeo</span><div class="wh" style="font-family:var(--body);font-size:14px;margin-top:6px">${p.wholesale.promo ? "Promoción ✅" : "Mayoreo:"} ${money(p.wholesale.price)} c/u a partir de ${p.wholesale.min} piezas.${p.wholesale.note ? " " + p.wholesale.note : ""}</div>` : money(p.price);
+    : p.wholesale ? `${money(p.price)} <span class="sz">c/u menudeo</span><div class="wh" style="font-family:var(--body);font-size:14px;margin-top:6px">${p.wholesale.promo ? "Promoción ✅" : "Mayoreo:"} ${p.wholesale.tiers ? p.wholesale.tiers.map((t) => `${money(t.price)} c/u a partir de ${t.min} piezas`).join("; ") : `${money(p.wholesale.price)} c/u a partir de ${p.wholesale.min} piezas`}.${p.wholesale.note ? " " + p.wholesale.note : ""}</div>` : money(p.price);
   $("#mQty").textContent = mQty; modalWholesale();
   const u = waUrl(`Hola ${STORE.name}, me interesa: ${msgName(p)}. ¿Está disponible?`);
   const pre = !!p.preventa;
@@ -1015,8 +1019,13 @@ function closeModal(){ clearTimeout(rotT); $("#mVid").pause(); $("#modal").class
 $("#mClose").addEventListener("click", closeModal);
 function modalWholesale(){
   const p = current; if (!p || !p.wholesale || p.preventa) return;
-  const on = mQty + groupUnits(p.wholesale.group) >= p.wholesale.min;
+  const tot = mQty + groupUnits(p.wholesale.group), on = tot >= p.wholesale.min;
   const lbl = p.wholesale.promo ? "promo" : "mayoreo";
+  if (p.wholesale.tiers) {
+    const next = p.wholesale.tiers.find((t) => tot < t.min);
+    $("#mPrice").innerHTML = `${money(whPrice(p, tot))} <span class="sz">c/u ${on ? "mayoreo" : "menudeo"}</span><div class="wh" style="font-family:var(--body);font-size:14px;margin-top:6px">${on ? `¡Precio de mayoreo! Llevas ${tot} piezas. ` : ""}${next ? `${money(next.price)} c/u a partir de ${next.min} piezas, te faltan ${next.min - tot}.` : ""}${p.wholesale.note ? " " + p.wholesale.note : ""}</div>`;
+    return;
+  }
   $("#mPrice").innerHTML = `${money(on ? p.wholesale.price : p.price)} <span class="sz">c/u ${on ? lbl : (p.wholesale.promo ? "1 pieza" : "menudeo")}</span><div class="wh" style="font-family:var(--body);font-size:14px;margin-top:6px">${on ? `¡Precio de ${lbl}! Llevas ${mQty + groupUnits(p.wholesale.group)} piezas.` : `${p.wholesale.promo ? "Promoción ✅" : "Mayoreo:"} ${money(p.wholesale.price)} c/u a partir de ${p.wholesale.min} piezas. Te faltan ${p.wholesale.min - mQty - groupUnits(p.wholesale.group)}.`}${p.wholesale.note ? " " + p.wholesale.note : ""}</div>`;
 }
 $("#mMinus").addEventListener("click", () => { mQty = Math.max(1, mQty - 1); $("#mQty").textContent = mQty; modalWholesale(); });
@@ -1042,7 +1051,7 @@ function addToCart(no, n, size){
   const before = tierFor(capUnits());
   const p0 = byNo(no), wBefore = p0.wholesale ? unitPrice(p0) : null;
   cart[k] = Math.min(500, (cart[k] || 0) + n); saveCart(); renderCart(); renderGrid();
-  if (p0.wholesale && unitPrice(p0) < wBefore) { toast(`¡Ya tienes precio de ${p0.wholesale.promo ? "promoción" : "mayoreo"}! ${money(p0.wholesale.price)} por ${p0.wholesale.unit || "pieza"}`); return; }
+  if (p0.wholesale && unitPrice(p0) < wBefore) { toast(`¡Ya tienes precio de ${p0.wholesale.promo ? "promoción" : "mayoreo"}! ${money(unitPrice(p0))} por ${p0.wholesale.unit || "pieza"}`); return; }
   const after = tierFor(capUnits());
   if (after !== before && after.price < before.price) { toast(`¡Ya tienes precio ${after.name.toLowerCase()}! ${money(after.price)} por gorra`); return; }
   toast(`Agregaste Nº ${pad(no)} ${byNo(no).model}${size ? " talla " + size : ""}`);
