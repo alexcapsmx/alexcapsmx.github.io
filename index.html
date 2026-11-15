@@ -198,9 +198,11 @@ main,footer{position:relative;z-index:1}
 @media (prefers-reduced-motion:reduce){.paq-kicker{animation:none}}
 .paq-head h2{font-family:var(--display);font-weight:400;font-size:clamp(34px,6vw,56px);line-height:1;margin:12px 0 8px;text-transform:uppercase}
 .paq-head p{color:var(--muted);margin:0}
-.paq-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+#grid.promo-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.chip.cat.cat-promo{color:var(--red);border-color:var(--red)}
+.chip.cat.cat-promo[aria-pressed="true"]{background:var(--red);color:var(--ink)}
 .paq{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
-.paq img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;cursor:zoom-in}
+.paq img{width:100%;aspect-ratio:9/10;object-fit:cover;object-position:50% 50%;display:block;cursor:zoom-in}
 .paq .pb{padding:14px;display:flex;flex-direction:column;gap:6px;flex:1}
 .paq h3{font-family:var(--display);font-weight:400;font-size:24px;line-height:1.05;margin:0;text-transform:uppercase}
 .paq .pp{font-family:var(--display);font-size:34px;color:var(--red);line-height:1}
@@ -210,7 +212,7 @@ main,footer{position:relative;z-index:1}
 .nav-hot{color:var(--red)!important;font-weight:800}
 .paq-zoom{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;padding:16px}
 .paq-zoom img{max-width:100%;max-height:100%;border-radius:12px}
-@media (max-width:860px){.paq-grid{grid-template-columns:1fr;max-width:460px;margin:0 auto}}
+@media (max-width:860px){#grid.promo-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.paq h3{font-size:18px}.paq .pp{font-size:26px}.paq .ps{font-size:12px}.paq .pb{padding:10px}.paq .btn-paq{min-height:42px;font-size:14px}}
 .promo{display:flex;flex-direction:column;gap:6px;margin-top:22px;padding:16px 18px;background:linear-gradient(135deg,rgba(255,74,61,.22),rgba(255,74,61,.06));border:1px solid var(--red);border-radius:14px;max-width:520px;color:var(--paper);text-decoration:none}
 .promo:hover{border-color:var(--paper)}
 .promo-tag{align-self:flex-start;background:var(--red);color:var(--ink);font-weight:800;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;border-radius:999px}
@@ -357,7 +359,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
     <a class="logo" href="#inicio" aria-label="Alex Caps, inicio"><img src="img/logo.png" alt="Alex Caps" width="440" height="197"></a>
     <nav class="nav" aria-label="Secciones">
       <a href="#tienda">Tienda</a>
-      <a href="#paquetes" class="nav-hot">Paquetes 🔥</a>
+      <a href="#tienda" class="nav-hot" data-go-promos>Promociones 🔥</a>
       <a href="#mayoreo">Mayoreo</a>
       <a href="#como-comprar">Cómo comprar</a>
       <a href="#contacto">Contacto</a>
@@ -394,17 +396,6 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
           <div><strong>1</strong><span>Mensaje para pedir</span></div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="paquetes" id="paquetes">
-    <div class="wrap">
-      <div class="paq-head">
-        <span class="paq-kicker">🔥 Paquetes emprendedores</span>
-        <h2>Arma tu paquete y empieza a vender</h2>
-        <p>Elige los modelos que quieras, a tu gusto. Ideal para reventa o para estrenar con todo.</p>
-      </div>
-      <div class="paq-grid" id="paqGrid"></div>
     </div>
   </section>
 
@@ -753,7 +744,7 @@ if (promoActive()) PRODUCTS.forEach((p) => {
 const tierFor = (caps) => CAP_TIERS.filter((t) => caps >= t.min).pop() || CAP_TIERS[0];
 const nextTier = (caps) => CAP_TIERS.find((t) => t.min > caps) || null;
 const BRAND_ORDER = ["Barbas Hats","Rude Awakenings","Gallo Fino x CT","Rico o Muerto","Baez","Asaali","Axx Mafia","By Dineral","Paionazo","Sp5der","New Balance","Nike","Jordan","Adidas","Bape","Hellstar","True Religion","Louis Vuitton","Dior","Boss","Burberry","Essentials","On","Alo","Joyería","Otras marcas"];
-const CATS = ["Todo","Alex Caps","Gorras","Gorras Deportivas","Hoodies","Conjuntos","Playeras","Shorts","Tenis","Jerseys Fútbol","Joyería"];
+const CATS = ["Todo","Promociones","Alex Caps","Gorras","Gorras Deportivas","Hoodies","Conjuntos","Playeras","Shorts","Tenis","Jerseys Fútbol","Joyería"];
 
 /* Sección "Alex Caps": videos de TikTok. Para agregar uno: {video:"vid/tt/nombre.mp4", thumb:"img/tt/nombre.jpg", title:"Texto corto"} */
 const TIKTOKS = [
@@ -798,16 +789,31 @@ const PAQUETES = [
   { img:"img/paq-p1.jpg", title:"1 gorra + 1 hoodie", price:1500, sub:"La gorra y la hoodie que tú elijas.", msg:"el paquete de 1 gorra y 1 hoodie por $1,500" },
   { img:"img/paq-p2.jpg", title:"2 hoodies a tu gusto", price:2500, sub:"True Religion, Bape, Asaali, By Dineral, Axx Mafia y más.", msg:"el paquete de 2 hoodies a mi gusto por $2,500" },
   { img:"img/paq-p3.jpg", title:"5 gorras + 5 conjuntos", price:4450, sub:"El paquete para emprender: elige los 10 a tu gusto.", msg:"el paquete emprendedor de 5 gorras y 5 conjuntos por $4,450" },
+  { img:"img/paq-p6.jpg", title:"2 shorts + 2 playeras", price:2800, sub:"Bape y Hellstar, a elegir a tu gusto.", msg:"el paquete de 2 shorts y 2 playeras por $2,800" },
+  { img:"img/paq-p4.jpg", title:"10 conjuntos + 10 gorras", price:8000, sub:"Paquete emprendedor: 20 piezas a elegir a tu gusto.", msg:"el paquete emprendedor de 10 conjuntos y 10 gorras por $8,000" },
+  { img:"img/paq-p5.jpg", title:"5 hoodies + 5 conjuntos + 10 gorras", price:10850, sub:"El paquete más completo: 20 piezas. Tallas y modelos a elegir a tu gusto.", msg:"el paquete emprendedor de 5 hoodies, 5 conjuntos y 10 gorras por $10,850" },
 ];
-queueMicrotask(() => { $("#paqGrid").innerHTML = PAQUETES.map((q, i) => `<article class="paq">
+function renderPromos(){
+  $("#grid").classList.add("promo-grid");
+  $("#result").textContent = `${PAQUETES.length} paquetes emprendedores`;
+  $("#grid").innerHTML = `<div class="paq-head" style="grid-column:1/-1">
+      <span class="paq-kicker">🔥 Paquetes emprendedores</span>
+      <h2>Arma tu paquete y empieza a vender</h2>
+      <p>Modelos y tallas a elegir a tu gusto. Ideal para reventa o para estrenar con todo.</p>
+    </div>` + PAQUETES.map((q) => `<article class="paq">
   <img src="${q.img}" alt="Promoción ${q.title} por ${money(q.price)}" loading="lazy" data-zoom="${q.img}">
   <div class="pb"><h3>${q.title}</h3><div class="pp">${money(q.price).replace(" MXN","")}</div><p class="ps">${q.sub}</p>
   <a class="btn-paq" href="${waUrl(`Hola ${STORE.name}, quiero ${q.msg}. ¿Qué modelos tienen disponibles?`) || "#contacto"}" target="_blank" rel="noopener">${WA_ICON} Lo quiero</a></div>
-</article>`).join(""); });
-$("#paqGrid").addEventListener("click", (e) => {
-  const im = e.target.closest("[data-zoom]"); if (!im) return;
+</article>`).join("");
+}
+document.addEventListener("click", (e) => {
+  const im = e.target.closest("#grid [data-zoom]"); if (!im) return;
   const z = document.createElement("div"); z.className = "paq-zoom"; z.innerHTML = `<img src="${im.dataset.zoom}" alt="">`;
   z.addEventListener("click", () => z.remove()); document.body.appendChild(z);
+});
+document.addEventListener("click", (e) => {
+  if (!e.target.closest("[data-go-promos]")) return;
+  state.cat = "Promociones"; state.brand = "Todas"; renderChips(); renderGrid();
 });
 if (promoActive()) {
   $("#promoBox").hidden = false;
@@ -820,10 +826,10 @@ if (promoActive()) {
 const inCat = (p) => state.cat === "Todo" || p.cat === state.cat;
 function renderChips(){
   $("#cats").innerHTML = CATS.map((c) => {
-    const n = c === "Todo" ? PRODUCTS.length : c === "Alex Caps" ? TIKTOKS.length : PRODUCTS.filter((p) => p.cat === c).length;
-    return `<button class="chip cat${c === "Alex Caps" ? " cat-brand" : ""}" type="button" data-cat="${c}" aria-pressed="${state.cat === c}">${c}<small>${n}</small></button>`;
+    const n = c === "Todo" ? PRODUCTS.length : c === "Alex Caps" ? TIKTOKS.length : c === "Promociones" ? PAQUETES.length : PRODUCTS.filter((p) => p.cat === c).length;
+    return `<button class="chip cat${c === "Alex Caps" ? " cat-brand" : ""}${c === "Promociones" ? " cat-promo" : ""}" type="button" data-cat="${c}" aria-pressed="${state.cat === c}">${c}<small>${n}</small></button>`;
   }).join("");
-  const isTT = state.cat === "Alex Caps";
+  const isTT = state.cat === "Alex Caps" || state.cat === "Promociones";
   $("#chips").hidden = isTT; $(".tools-row").hidden = isTT;
   if (isTT) { $("#chips").innerHTML = ""; return; }
   const pool = PRODUCTS.filter(inCat);
@@ -927,7 +933,9 @@ function closeTT(){
 $("#ttClose").addEventListener("click", closeTT);
 $("#grid").addEventListener("click", (e) => { const b = e.target.closest("[data-tt]"); if (b) openTT(+b.dataset.tt); });
 function renderGrid(){
+  $("#grid").classList.remove("promo-grid");
   if (state.cat === "Alex Caps") { renderTikToks(); return; }
+  if (state.cat === "Promociones") { $("#grid").classList.remove("tt-grid"); renderPromos(); return; }
   $("#grid").classList.remove("tt-grid");
   const list = visible();
   $("#result").textContent = `${list.length} de ${PRODUCTS.length} productos`;
